@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: duskio-api
+  devtools:
+    livereload:
+      enabled: false
+  datasource:
+    url: jdbc:h2:file:./duskio
+    username: sa
+    password: 123456
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+#  main:
+#    lazy-initialization: true
+
+
+logging:
+  level:
+    root: info
+  pattern:
+    console: "%clr(%d{MMddyyyy'T'HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%6.6t]){faint} %clr(%-35.35logger{34}){cyan} %clr(:){faint} %m%n%wEx"
