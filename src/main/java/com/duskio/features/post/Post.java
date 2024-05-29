@@ -1,6 +1,22 @@
 package com.duskio.features.post;
 
-import java.time.LocalDateTime;
+import com.duskio.features.category.CategoryDto;
+import com.duskio.features.postimage.PostImageDto;
+import jakarta.annotation.Nullable;
+import org.jdbi.v3.core.mapper.Nested;
 
-public record Post(int id, String title, String description, LocalDateTime dateTime, int categoryId) {
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public record Post(int postId,
+                   String title,
+                   String description,
+                   LocalDateTime dateTime,
+                   @Nested CategoryDto category, @Nullable List<PostImageDto> images) {
+    public Post {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+    }
 }

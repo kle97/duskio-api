@@ -11,7 +11,11 @@ public class CategoryService {
     
     private final CategoryDao categoryDao;
     
-    public List<Category> getAll() {
-        return categoryDao.getAll();
+    public List<Category> findAll() {
+        return categoryDao.findAll();
+    }
+
+    public List<Category> findAllWithPosts() {
+        return categoryDao.findAllWithPosts();
     }
 }

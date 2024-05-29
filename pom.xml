@@ -23,6 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <jdbiVersion>3.45.1</jdbiVersion>
+        <springdocVersion>2.5.0</springdocVersion>
     </properties>
     
     <dependencies>
@@ -67,6 +68,12 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+            <version>${springdocVersion}</version>
         </dependency>
 
         <dependency>

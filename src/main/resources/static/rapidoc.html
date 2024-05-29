@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Rapidoc</title>
+  <!-- needed for adaptive design -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+</head>
+<style>
+  .btn {
+    width: 90px;
+    height: 32px;
+    padding: 2px;
+    font-size: 13px;
+    background-color: DodgerBlue;
+    color: #fff;
+    border: none;
+    margin: 0 2px;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .btn.medium {
+    width: 75px;
+    height: 28px
+  }
+  
+  .nav-text {
+    text-align: center; 
+    padding: 0 0 12px 0; 
+    color:#47AFE8;
+  }
+  .button-group {
+    width:100%; 
+    display: flex;
+    justify-content: center;
+  }
+</style>
+
+<body>
+  <rapi-doc #theDoc id="the-doc"
+            spec-url="http://localhost:8080/v3/api-docs"
+            render-style="focused"
+            sort-endpoints-by="method"
+            sort-tags="true"
+            use-path-in-nav-bar="true"
+            default-schema-tab="example"
+  >
+    <div slot="nav-logo">
+      <div class="nav-text">API Display Mode</div>
+      <div class="button-group">
+        <button class="btn medium" id="btn1">Path</button>
+        <button class="btn medium" id="btn2">Summary</button>
+      </div>
+    </div>
+  </rapi-doc>
+  
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const rapidocEl = document.getElementById("the-doc");
+      document.getElementById("btn1").addEventListener("click", () => {
+        rapidocEl.setAttribute("use-path-in-nav-bar", "true")
+      });
+      
+      document.getElementById("btn2").addEventListener("click", () => {
+        rapidocEl.setAttribute("use-path-in-nav-bar", "false")
+      });
+    });
+  </script>
+</body>
+</html>
+
