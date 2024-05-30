@@ -58,6 +58,12 @@
             <artifactId>jdbi3-spring5</artifactId>
             <version>${jdbiVersion}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jdbi</groupId>
+            <artifactId>jdbi3-stringtemplate4</artifactId>
+            <version>${jdbiVersion}</version>
+        </dependency>
         
 <!--        <dependency>-->
 <!--            <groupId>com.oracle.database.jdbc</groupId>-->

@@ -1,6 +1,6 @@
 package com.duskio.features.post;
 
-import com.duskio.features.category.CategoryDto;
+import com.duskio.features.category.CategoryResponse;
 import com.duskio.features.postimage.PostImageDto;
 import jakarta.annotation.Nullable;
 import org.jdbi.v3.core.mapper.Nested;
@@ -13,7 +13,7 @@ public record Post(int postId,
                    String title,
                    String description,
                    LocalDateTime dateTime,
-                   @Nested CategoryDto category, @Nullable List<PostImageDto> images) {
+                   @Nested CategoryResponse category, @Nullable List<PostImageDto> images) {
     public Post {
         if (images == null) {
             images = new ArrayList<>();
