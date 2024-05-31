@@ -1,5 +1,8 @@
 package com.duskio.features.post;
 
+import com.duskio.common.KeysetPageRequest;
+import com.duskio.common.KeysetPageResponse;
+import com.duskio.common.PageableHelper;
 import com.duskio.features.postimage.PostImageDto;
 import org.jdbi.v3.core.result.LinkedHashMapRowReducer;
 import org.jdbi.v3.core.result.RowView;
@@ -18,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @JdbiRepository
 public interface PostDao extends SqlObject {
@@ -27,25 +29,27 @@ public interface PostDao extends SqlObject {
     Optional<Post> findById(int postId);
     
     @SqlQuery("select * from post left join category using (category_id)")
-    List<Post> findAll();
+    List<Post> findOffsetPage();
     
     @SqlQuery("select * from post left join category using (category_id) left join post_image using (post_id)")
     @UseRowReducer(PostReducer.class)
     List<Post> findAllWithImages();
 
-    @SqlQuery("select * from post left join category using (category_id) left join post_image using (post_id) order by <sortBy> offset ? rows fetch next ? rows only")
-    @UseRowReducer(PostReducer.class)
-    List<Post> findAllWithImages(long offset, int limit, @Define String sortBy);
+    @SqlQuery("select * from post left join category using (category_id) <queryString>")
+    List<Post> findKeysetPage(@Define String queryString);
 
-    @SqlQuery("select count(1) from post")
+    @SqlQuery("select * from post left join category using (category_id) <queryString>")
+    List<Post> findOffsetPage(@Define String queryString);
+
+    @SqlQuery("select count(*) from post")
     int count();
     
-    default Page<Post> findAllWithImagesPageable(Pageable pageable) {
-        String order = pageable.getSort()
-                               .stream()
-                               .map(o -> o.getProperty() + " " + o.getDirection().name().toLowerCase())
-                               .collect(Collectors.joining(", "));
-        return new PageImpl<>(findAllWithImages(pageable.getOffset(), pageable.getPageSize(), order), pageable, count());
+    default Page<Post> findPostInstancesAsPage(Pageable pageable) {
+        return new PageImpl<>(findOffsetPage(PageableHelper.getQueryString(pageable)), pageable, count());
+    }
+
+    default KeysetPageResponse<Post> findPostInstancesAsKeysetPage(KeysetPageRequest request) {
+        return new KeysetPageResponse<>(findKeysetPage(request.getQueryString()), request.limit());
     }
 
     @SqlUpdate("insert into post (title, description, datetime, category_id) values (?, ?, ?, ?)")

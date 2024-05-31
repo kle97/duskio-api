@@ -1,6 +1,6 @@
 package com.duskio.features.category;
 
-import com.duskio.features.post.PostDto;
+import com.duskio.features.post.PostResponse;
 import org.jdbi.v3.core.result.LinkedHashMapRowReducer;
 import org.jdbi.v3.core.result.RowView;
 import org.jdbi.v3.spring5.JdbiRepository;
@@ -39,7 +39,7 @@ public interface CategoryDao {
             Category category = container.computeIfAbsent(rowView.getColumn("category_id", Integer.class), 
                                                           id -> rowView.getRow(Category.class));
             if (rowView.getColumn("post_id", Integer.class) != null) {
-                category.posts().add(rowView.getRow(PostDto.class));
+                category.posts().add(rowView.getRow(PostResponse.class));
             }
         }
     }

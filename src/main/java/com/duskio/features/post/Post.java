@@ -13,7 +13,8 @@ public record Post(int postId,
                    String title,
                    String description,
                    LocalDateTime dateTime,
-                   @Nested CategoryResponse category, @Nullable List<PostImageDto> images) {
+                   @Nested CategoryResponse category, 
+                   @Nullable List<PostImageDto> images) {
     public Post {
         if (images == null) {
             images = new ArrayList<>();

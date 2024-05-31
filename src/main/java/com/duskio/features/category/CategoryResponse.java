@@ -1,4 +1,6 @@
 package com.duskio.features.category;
 
-public record CategoryResponse(int categoryId, String name) {
+import jakarta.annotation.Nullable;
+
+public record CategoryResponse(int categoryId, @Nullable String name) {
 }
