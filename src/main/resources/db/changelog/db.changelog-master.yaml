@@ -1,4 +1,7 @@
 databaseChangeLog:
   - includeAll:
       relativeToChangelogFile: true
-      path: v001
+      path: schema
+  - includeAll:
+      relativeToChangelogFile: true
+      path: data

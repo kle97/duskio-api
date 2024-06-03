@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class KeysetPageResponse<T> {
+public class ScrollResponse<T> {
     
     private final List<T> content;
     
@@ -15,11 +15,11 @@ public class KeysetPageResponse<T> {
     
     private final boolean next;
     
-    public KeysetPageResponse(List<T> content, int limit) {
+    public ScrollResponse(List<T> content, int limit) {
         this.content = content;
         this.size = content.size();
         this.limit = limit;
-        this.next = size <= limit;
+        this.next = size >= limit;
     }
     
     public boolean isEmpty() {
