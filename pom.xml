@@ -63,12 +63,6 @@
             <artifactId>jdbi3-spring5</artifactId>
             <version>${jdbiVersion}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3-oracle12</artifactId>
-            <version>${jdbiVersion}</version>
-        </dependency>
         
 <!--        <dependency>-->
 <!--            <groupId>com.oracle.database.jdbc</groupId>-->
@@ -115,13 +109,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3-testing</artifactId>
-            <version>${jdbiVersion}</version>
             <scope>test</scope>
         </dependency>
 

@@ -7,7 +7,6 @@ import com.duskio.features.postimage.PostImageResponse;
 import org.jdbi.v3.core.result.LinkedHashMapRowReducer;
 import org.jdbi.v3.core.result.RowView;
 import org.jdbi.v3.spring5.JdbiRepository;
-import org.jdbi.v3.sqlobject.SqlObject;
 import org.jdbi.v3.sqlobject.customizer.BindMethods;
 import org.jdbi.v3.sqlobject.customizer.Define;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
@@ -23,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @JdbiRepository
-public interface PostDao extends SqlObject {
+public interface PostDao {
 
     @SqlQuery("select * from post join category using (category_id) where post_id=?")
     Optional<PostResponse> findById(int postId);

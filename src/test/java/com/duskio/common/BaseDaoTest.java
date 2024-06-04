@@ -14,7 +14,6 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
 import org.jdbi.v3.spring5.SpringConnectionFactory;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,6 @@ import java.sql.SQLException;
 
 public abstract class BaseDaoTest extends BaseTest {
 
-    private int id;
     private Jdbi jdbi;
     private final JdbiUtils jdbiUtils = getJdbi().onDemand(JdbiUtils.class);
     
@@ -36,15 +34,10 @@ public abstract class BaseDaoTest extends BaseTest {
         updateWithLiquibase();
     }
 
-    @AfterAll
-    public void afterAll() {
-        softAssert().assertAll();
-    }
-
     @AfterEach
     public void afterEach() {
         getJdbiUtils().truncateAllTables();
-        id = 0;
+        softAssert().assertAll();
     }
     
     protected DataSource getDataSource() {
@@ -86,13 +79,5 @@ public abstract class BaseDaoTest extends BaseTest {
         } catch (SQLException | DatabaseException | CommandExecutionException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    protected int getId() {
-        return id;
-    }
-    
-    protected int getNextId() {
-        return ++id;
     }
 }

@@ -8,4 +8,4 @@ logging:
   level:
     root: info
   pattern:
-    console: "%clr(%d{MMddyyyy'T'HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%6.6t]){faint} %clr(%-35.35logger{34}){cyan} %clr(:){faint} %m%n%wEx"
+    console: "%clr(%d{MMddyyyy'T'HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%4.4t]){faint} %clr(%-25.25logger{24}){cyan}%clr(:){faint} %m%n%wEx"
