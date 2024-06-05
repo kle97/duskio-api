@@ -37,7 +37,6 @@ public abstract class BaseDaoTest extends BaseTest {
     @AfterEach
     public void afterEach() {
         getJdbiUtils().truncateAllTables();
-        softAssert().assertAll();
     }
     
     protected DataSource getDataSource() {

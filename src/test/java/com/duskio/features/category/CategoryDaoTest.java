@@ -22,17 +22,14 @@ public class CategoryDaoTest extends BaseDaoTest {
 
     @Test
     public void testFindById() {
-        log.info("Test findById");
         CategoryRequest request = new CategoryRequest("New");
         categoryDao.save(request);
         CategoryResponse expectedResponse = new CategoryResponse(1, "New", List.of());
-        softAssert().as("New").assertThat(categoryDao.findById(1)).hasValue(expectedResponse);
+        softAssert().as("findById").assertThat(categoryDao.findById(1)).hasValue(expectedResponse);
     }
 
     @Test
     public void testFindByIdWithOneToMany() {
-        log.info("Test findById with one to many");
-        
         categoryDao.save(new CategoryRequest("New"));
         
         PostDao postDao = getJdbi().onDemand(PostDao.class);
@@ -46,15 +43,14 @@ public class CategoryDaoTest extends BaseDaoTest {
         softAssert().as("FindById category with posts").assertThat(optional).isPresent();
         if (optional.isPresent()) {
             CategoryResponse response = optional.get();
-            softAssert().as("FindById category with posts").assertThat(response.categoryId()).isEqualTo(1);
-            softAssert().as("FindById category with posts").assertThat(response.name()).isEqualTo("New");
-            softAssert().as("FindById category with posts").assertThat(response.posts()).hasSize(4);
+            softAssert().as("findById with one to many").assertThat(response.categoryId()).isEqualTo(1);
+            softAssert().as("findById with one to many").assertThat(response.name()).isEqualTo("New");
+            softAssert().as("findById with one to many").assertThat(response.posts()).hasSize(4);
         }
     }
 
     @Test
     public void testFindAll() {
-        log.info("Test findAll");
         List<CategoryRequest> requests = List.of(new CategoryRequest("Category 1"), 
                                                  new CategoryRequest("Category 2"), 
                                                  new CategoryRequest("Category 3"));
@@ -72,7 +68,6 @@ public class CategoryDaoTest extends BaseDaoTest {
 
     @Test
     public void testFindPage() {
-        log.info("Test findPage");
         List<CategoryRequest> requests = List.of(new CategoryRequest("Category 1"),
                                                  new CategoryRequest("Category 2"),
                                                  new CategoryRequest("Category 3"));
@@ -104,7 +99,6 @@ public class CategoryDaoTest extends BaseDaoTest {
 
     @Test
     public void testFindScroll() {
-        log.info("Test findScroll");
         List<CategoryRequest> requests = List.of(new CategoryRequest("Category 1"),
                                                  new CategoryRequest("Category 2"),
                                                  new CategoryRequest("Category 3"));
@@ -140,7 +134,6 @@ public class CategoryDaoTest extends BaseDaoTest {
 
     @Test
     public void testCreate() {
-        log.info("Test create");
         CategoryRequest request = new CategoryRequest("New");
         CategoryResponse expectedResponse = new CategoryResponse(1, "New", List.of());
         softAssert().as("Create new category").assertThat(categoryDao.save(request)).isEqualTo(1);
@@ -149,7 +142,6 @@ public class CategoryDaoTest extends BaseDaoTest {
 
     @Test
     public void testUpdate() {
-        log.info("Test update");
         CategoryRequest newRequest = new CategoryRequest("New");
         CategoryRequest updateRequest = new CategoryRequest("Updated");
         CategoryResponse expectedResponse = new CategoryResponse(1, "Updated", List.of());
@@ -161,7 +153,6 @@ public class CategoryDaoTest extends BaseDaoTest {
 
     @Test
     public void testDelete() {
-        log.info("Test delete");
         CategoryRequest request = new CategoryRequest("Deleting");
         categoryDao.save(request);
         
