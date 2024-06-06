@@ -103,15 +103,12 @@ public class SoftAssertJ2 extends SoftAssertions {
     }
 
     private void logPass(String message) {
-        message = message.trim()
-                         .replaceAll("[\\s]+", " ");
+        message = message.trim().replaceAll("\\s+", " ");
         getLogger().info("   " + AnsiColor.GREEN_BOLD + "PASS" + AnsiColor.RESET + "   " + message);
     }
 
     private void logFail(String message) {
-        message = message.trim()
-                         .replaceAll("[\\s]+", " ")
-                         .replace("Expecting", "expected");
+        message = message.trim().replaceAll("\\s+", " ").replace("Expecting", "expected");
         getLogger().info("   " + AnsiColor.RED_BOLD + "FAIL" + AnsiColor.RESET + "   " + message);
     }
 
