@@ -41,7 +41,7 @@
 
 <body>
   <rapi-doc #theDoc id="the-doc"
-            spec-url="http://localhost:8080/v3/api-docs"
+            spec-url="/v3/api-docs"
             render-style="focused"
             sort-endpoints-by="method"
             sort-tags="true"
@@ -60,6 +60,7 @@
   
   <script>
     window.addEventListener("DOMContentLoaded", () => {
+      document.getElementsByTagName("rapi-doc")[0].setAttribute("server-url", location.origin)
       const rapidocEl = document.getElementById("the-doc");
       document.getElementById("btn1").addEventListener("click", () => {
         rapidocEl.setAttribute("use-path-in-nav-bar", "true")
@@ -72,4 +73,3 @@
   </script>
 </body>
 </html>
-
