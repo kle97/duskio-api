@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.duskio.common.constant.Constant.API_PATH;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest
@@ -78,23 +77,34 @@ public class CategoryControllerTest extends BaseTest {
 
         PagedModel<CategoryResponse> expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryResponse(3, "Category 3", List.of()),
                                                                                         new CategoryResponse(2, "Category 2", List.of())), 
-                                                                                request.previousOrFirst(), 2));
+                                                                                request, 2));
         Mockito.when(categoryDao.findPage(request)).thenReturn(expected);
-        mockMvc.perform(MockMvcRequestBuilders.get(API_PATH + "categories/page")
+        String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH + "categories/page")
                                                                 .param("page", "0")
                                                                 .param("size", "2")
                                                                 .param("sort", "category_id,desc"))
-               .andExpect(status().isOk());
+                                 .andReturn()
+                                 .getResponse()
+                                 .getContentAsString();
+
+        softAssert().as("Response")
+                    .assertThat(response)
+                    .isEqualTo(objectMapper.writeValueAsString(expected));
 
         request = PageRequest.of(1, 2, Sort.Direction.DESC, "category_id");
-        expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryResponse(1, "Category 1", List.of())),
-                                                   request.previousOrFirst(), 1));
+        expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryResponse(1, "Category 1", List.of())), request, 2));
         Mockito.when(categoryDao.findPage(request)).thenReturn(expected);
-        mockMvc.perform(MockMvcRequestBuilders.get(API_PATH + "categories/page")
-                                              .param("page", "0")
-                                              .param("size", "2")
-                                              .param("sort", "category_id,desc"))
-               .andExpect(status().isOk());
+        response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH + "categories/page")
+                                                         .param("page", "1")
+                                                         .param("size", "2")
+                                                         .param("sort", "category_id,desc"))
+                          .andReturn()
+                          .getResponse()
+                          .getContentAsString();
+        softAssert().as("Response")
+                    .assertThat(response)
+                    .isEqualTo(objectMapper.writeValueAsString(expected));
+        
     }
 
     @Test
