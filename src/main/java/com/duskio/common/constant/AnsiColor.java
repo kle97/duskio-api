@@ -24,6 +24,16 @@ public enum AnsiColor {
     CYAN_BOLD("\033[1;36m"), // CYAN
     WHITE_BOLD("\033[1;37m"), // WHITE
 
+    // Italic
+    BLACK_ITALIC("\033[3;30m"), // BLACK
+    RED_ITALIC("\033[3;31m"), // RED
+    GREEN_ITALIC("\033[3;32m"), // GREEN
+    YELLOW_ITALIC("\033[3;33m"), // YELLOW
+    BLUE_ITALIC("\033[3;34m"), // BLUE
+    MAGENTA_ITALIC("\033[3;35m"), // MAGENTA
+    CYAN_ITALIC("\033[3;36m"), // CYAN
+    WHITE_ITALIC("\033[3;37m"), // WHITE
+
     // Underline
     BLACK_UNDERLINED("\033[4;30m"), // BLACK
     RED_UNDERLINED("\033[4;31m"), // RED

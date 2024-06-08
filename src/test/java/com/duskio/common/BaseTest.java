@@ -9,17 +9,17 @@ import org.slf4j.LoggerFactory;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseTest {
     
-    protected SoftAssertJ softAssert() {
+    protected SoftAssertJ softly() {
         return SoftAssertJ.getInstance();
     }
 
     @BeforeEach
-    public void beforeEach(TestInfo testInfo) {
+    public void baseTestBeforeEach(TestInfo testInfo) {
         LoggerFactory.getLogger(getClass()).info(testInfo.getDisplayName());
     }
 
     @AfterEach
-    public void afterEach() {
-        softAssert().assertAll();
+    public void baseTestAfterEach() {
+        softly().assertAll();
     }
 }

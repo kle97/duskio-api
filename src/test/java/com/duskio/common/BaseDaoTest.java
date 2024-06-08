@@ -29,13 +29,13 @@ public abstract class BaseDaoTest extends BaseTest {
     private final JdbiUtils jdbiUtils = getJdbi().onDemand(JdbiUtils.class);
     
     @BeforeAll
-    public void beforeAll() {
+    public void baseDaoTestBeforeAll() {
         jdbi = getJdbi();
         updateWithLiquibase();
     }
 
     @AfterEach
-    public void afterEach() {
+    public void baseDaoTestAfterEach() {
         getJdbiUtils().truncateAllTables();
     }
     

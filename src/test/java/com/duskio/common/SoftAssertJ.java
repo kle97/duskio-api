@@ -16,12 +16,17 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Collections.synchronizedList;
+import static java.util.Collections.unmodifiableList;
 
 @Slf4j
 public class SoftAssertJ extends SoftAssertions {
@@ -39,6 +44,7 @@ public class SoftAssertJ extends SoftAssertions {
     public static SoftAssertJ getInstance() {
         if (softAssertJ == null) {
             softAssertJ = new SoftAssertJ();
+            softAssertJ.setDelegate(new AssertionErrorCollectorDelegate());
         }
         return softAssertJ;
     }
@@ -215,5 +221,36 @@ public class SoftAssertJ extends SoftAssertions {
                                                           @Origin Method method,
                                                           @AllArguments Object[] arguments,
                                                           @FieldValue("actual") Object actual) throws Exception;
+    }
+    
+    static class AssertionErrorCollectorDelegate implements AssertionErrorCollector {
+
+        private volatile boolean wasSuccess = true;
+        private List<AssertionError> collectedAssertionErrors = synchronizedList(new ArrayList<>());
+        
+        @Override
+        public void collectAssertionError(AssertionError error) {
+            collectedAssertionErrors.add(error);
+            wasSuccess = false;
+        }
+
+        @Override
+        public List<AssertionError> assertionErrorsCollected() {
+            List<AssertionError> errors = unmodifiableList(collectedAssertionErrors);
+            if (!errors.isEmpty()) {
+                collectedAssertionErrors = synchronizedList(new ArrayList<>());
+            }
+            return errors;
+        }
+
+        @Override
+        public void succeeded() {
+            wasSuccess = true;
+        }
+
+        @Override
+        public boolean wasSuccess() {
+            return wasSuccess;
+        }
     }
 }
