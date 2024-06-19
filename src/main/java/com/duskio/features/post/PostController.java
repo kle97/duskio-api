@@ -18,11 +18,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static com.duskio.common.constant.Constant.API_PATH;
+import static com.duskio.common.constant.Constant.ADMIN_API_PATH;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(API_PATH +"posts")
+@RequestMapping(ADMIN_API_PATH +"posts")
 @Tag(name = "post", description = "Post API")
 public class PostController {
 

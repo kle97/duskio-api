@@ -8,6 +8,7 @@ import org.jdbi.v3.core.statement.Slf4JSqlLogger;
 import org.jdbi.v3.spring5.EnableJdbiRepositories;
 import org.jdbi.v3.spring5.SpringConnectionFactory;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,7 @@ import javax.sql.DataSource;
 
 @Slf4j
 @EnableJdbiRepositories(basePackageClasses = DuskioApiApplication.class)
+@EnableConfigurationProperties(ApplicationProperties.class)
 @Configuration(proxyBeanMethods = false)
 public class AppConfiguration {
     

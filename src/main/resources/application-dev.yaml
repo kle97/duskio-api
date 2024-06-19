@@ -15,9 +15,38 @@ spring:
         trace: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${duskio.keycloak-endpoint}/realms/${duskio.keycloak-realm}/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            client-id: ${duskio.keycloak-client}
+            client-secret: eH4Keiaw0bHaFXBeNEaGIq83fAnXlsry
+            authorization-grant-type: authorization_code
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: ${duskio.keycloak-endpoint}/realms/${duskio.keycloak-realm}
 
 springdoc:
   api-docs:
     enabled: true
     path: /v3/api-docs
+
+
+duskio:
+  public-endpoints: 
+    - ${springdoc.api-docs.path}
+    - /public/**
+    - /
+    - /index.html
+    - /error
+  allowed-origins:
+    - "*"
+  keycloak-endpoint: http://localhost:8081
+  keycloak-realm: duskio
+  keycloak-client: duskio-api
+  home-endpoint: http://localhost:8080

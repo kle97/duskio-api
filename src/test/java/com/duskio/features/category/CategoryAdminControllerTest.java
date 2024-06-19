@@ -22,6 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -32,13 +34,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
 @Slf4j
 @WebMvcTest
-@ContextConfiguration(classes = {CategoryController.class, GlobalExceptionHandler.class})
+@ContextConfiguration(classes = {CategoryAdminController.class, GlobalExceptionHandler.class})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CategoryControllerTest extends BaseTest {
-    private static final String API_PATH = Constant.API_PATH + "categories";
+public class CategoryAdminControllerTest extends BaseTest {
+    private static final String API_PATH = Constant.ADMIN_API_PATH + "categories";
     
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
@@ -47,6 +48,7 @@ public class CategoryControllerTest extends BaseTest {
     private CategoryDao categoryDao;
     
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindById() throws Exception {
         CategoryResponse expected = new CategoryResponse(1, "New", List.of());
         Mockito.when(categoryDao.findById(1)).thenReturn(Optional.of(expected));
@@ -57,6 +59,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindByIdInvalid() throws Exception {
         Mockito.when(categoryDao.findById(1)).thenReturn(Optional.empty());
         String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH + "/1"))
@@ -70,6 +73,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindByIdWithOneToMany() throws Exception {
         CategoryResponse expected = new CategoryResponse(1, "New", List.of(new PostResponse(1, "Post", "Description", LocalDateTime.now(), List.of()),
                                                                            new PostResponse(2, "Post", "Description", LocalDateTime.now(), List.of())));
@@ -81,6 +85,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindByIdWithOneToManyInvalid() throws Exception {
         Mockito.when(categoryDao.findByIdWithPosts(1)).thenReturn(Optional.empty());
         String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH  + "/1/posts"))
@@ -94,6 +99,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindAll() throws Exception {
         List<CategoryResponse> expectedResponses = List.of(new CategoryResponse(1, "Category 1", List.of()),
                                                            new CategoryResponse(2, "Category 2", List.of()),
@@ -106,6 +112,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindPage() throws Exception {
         PageRequest request = PageRequest.of(0, 2, Sort.Direction.DESC, "category_id");
         PagedModel<CategoryResponse> expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryResponse(3, "Category 3", List.of()),
@@ -141,6 +148,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindPageInvalid() throws Exception {
         Mockito.when(categoryDao.findPage(Mockito.any(PageRequest.class)))
                .thenThrow(UnableToCreateStatementException.class);
@@ -158,6 +166,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindScroll()throws Exception {
         ScrollResponse<CategoryResponse> expected = new ScrollResponse<>(List.of(new CategoryResponse(3, "Category 3", List.of()),
                                                                                  new CategoryResponse(2, "Category 2", List.of())), 
@@ -186,6 +195,7 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindScrollInvalid()throws Exception {
         Mockito.when(categoryDao.findScroll(Mockito.any(ScrollRequest.class)))
                .thenThrow(UnableToCreateStatementException.class);
@@ -201,10 +211,12 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testSave() throws Exception {
         CategoryRequest request = new CategoryRequest("New");
         Mockito.when(categoryDao.save(request)).thenReturn(1);
         String response = mockMvc.perform(MockMvcRequestBuilders.post(API_PATH)
+                                                                .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                                 .contentType(MediaType.APPLICATION_JSON)
                                                                 .content(objectMapper.writeValueAsString(request)))
                                  .andReturn().getResponse().getContentAsString();
@@ -212,9 +224,11 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testSaveInvalid() throws Exception {
         CategoryRequest request = new CategoryRequest("");
         String response = mockMvc.perform(MockMvcRequestBuilders.post(API_PATH)
+                                                                .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                                 .contentType(MediaType.APPLICATION_JSON)
                                                                 .content(objectMapper.writeValueAsString(request)))
                                  .andReturn().getResponse().getContentAsString();
@@ -227,6 +241,7 @@ public class CategoryControllerTest extends BaseTest {
 
         request = new CategoryRequest("a".repeat(256));
         response = mockMvc.perform(MockMvcRequestBuilders.post(API_PATH)
+                                                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                          .contentType(MediaType.APPLICATION_JSON)
                                                          .content(objectMapper.writeValueAsString(request)))
                           .andReturn().getResponse().getContentAsString();
@@ -239,10 +254,12 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testUpdate() throws Exception {
         CategoryRequest request = new CategoryRequest("Updated");
         Mockito.when(categoryDao.update(1, request)).thenReturn(true);
         String response = mockMvc.perform(MockMvcRequestBuilders.put(API_PATH + "/1")
+                                                                .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                                 .contentType(MediaType.APPLICATION_JSON)
                                                                 .content(objectMapper.writeValueAsString(request)))
                                  .andReturn().getResponse().getContentAsString();
@@ -250,9 +267,11 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testUpdateInvalid() throws Exception {
         CategoryRequest request = new CategoryRequest("");
         String response = mockMvc.perform(MockMvcRequestBuilders.put(API_PATH + "/1")
+                                                                .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                                 .contentType(MediaType.APPLICATION_JSON)
                                                                 .content(objectMapper.writeValueAsString(request)))
                                  .andReturn().getResponse().getContentAsString();
@@ -265,6 +284,7 @@ public class CategoryControllerTest extends BaseTest {
 
         request = new CategoryRequest("a".repeat(256));
         response = mockMvc.perform(MockMvcRequestBuilders.put(API_PATH + "/1")
+                                                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                          .contentType(MediaType.APPLICATION_JSON)
                                                          .content(objectMapper.writeValueAsString(request)))
                           .andReturn().getResponse().getContentAsString();
@@ -277,17 +297,21 @@ public class CategoryControllerTest extends BaseTest {
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testDelete() throws Exception {
         Mockito.when(categoryDao.deleteById(1)).thenReturn(1);
-        String response = mockMvc.perform(MockMvcRequestBuilders.delete(API_PATH + "/1"))
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete(API_PATH + "/1")
+                                                                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                                  .andReturn().getResponse().getContentAsString();
         softly().as("Delete").assertThat(objectMapper.readValue(response, Integer.class)).isEqualTo(1);
     }
 
     @Test
+    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testDeleteInvalid() throws Exception {
         Mockito.when(categoryDao.deleteById(1)).thenReturn(0);
-        String response = mockMvc.perform(MockMvcRequestBuilders.delete(API_PATH + "/1"))
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete(API_PATH + "/1")
+                                                                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                                  .andReturn().getResponse().getContentAsString();
         softly().as("Delete invalid").assertThat(objectMapper.readValue(response, Integer.class)).isEqualTo(0);
     }

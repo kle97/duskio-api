@@ -42,15 +42,20 @@
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
         
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
         
         <dependency>
             <groupId>com.h2database</groupId>
@@ -112,11 +117,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -126,7 +131,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <jvmArguments>
-                        -XX:TieredStopAtLevel=1 -Xverify:none -XX:+AllowEnhancedClassRedefinition -XX:HotswapAgent=fatjar
+                        -XX:TieredStopAtLevel=1 -XX:+AllowEnhancedClassRedefinition -XX:HotswapAgent=fatjar
                     </jvmArguments>
                     <excludes>
                         <exclude>

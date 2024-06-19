@@ -18,11 +18,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import static com.duskio.common.constant.Constant.API_PATH;
+import static com.duskio.common.constant.Constant.ADMIN_API_PATH;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(API_PATH +"post-images")
+@RequestMapping(ADMIN_API_PATH +"post-images")
 @Tag(name = "post-image", description = "Post's images API")
 public class PostImageController {
     
