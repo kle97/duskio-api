@@ -40,7 +40,6 @@ springdoc:
 duskio:
   public-endpoints: 
     - ${springdoc.api-docs.path}
-    - /public/**
     - /
     - /index.html
     - /error

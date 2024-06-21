@@ -36,9 +36,9 @@ import java.util.Optional;
 
 @Slf4j
 @WebMvcTest
-@ContextConfiguration(classes = {CategoryAdminController.class, GlobalExceptionHandler.class})
+@ContextConfiguration(classes = {CategoryAdminRestController.class, GlobalExceptionHandler.class})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CategoryAdminControllerTest extends BaseTest {
+public class CategoryAdminRestControllerTest extends BaseTest {
     private static final String API_PATH = Constant.ADMIN_API_PATH + "categories";
     
     private final MockMvc mockMvc;

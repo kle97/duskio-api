@@ -1,0 +1,58 @@
+# duskio
+
+###
+# @name token
+POST {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id = {{client_id}} &
+client_secret = {{client_secret}} &
+username = johnsmith &
+password = 123456 &
+grant_type = password &
+scope = openid
+
+> {%
+    client.global.set("access_token", response.body["access_token"]);
+
+    client.global.set("refresh_token", response.body["refresh_token"]);
+%}
+
+###
+# @name userinfo
+GET {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/userinfo
+Authorization: Bearer {{access_token}}
+
+###
+# @name registrations
+GET {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/registrations?
+    client_id={{client_id}}&
+    response_type=code
+
+###
+# @name auth
+GET {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/auth?
+    client_id={{client_id}}&
+    response_type=code
+
+###
+# @name logout
+GET {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/logout
+
+###
+# @name revoke (access token)
+POST {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/revoke
+Content-Type: application/x-www-form-urlencoded
+
+client_id = {{client_id}} &
+client_secret = {{client_secret}} &
+token = {{access_token}}
+
+###
+# @name revoke (refresh token)
+POST {{keycloak_server_url}}/realms/{{realm}}/protocol/openid-connect/revoke
+Content-Type: application/x-www-form-urlencoded
+
+client_id = {{client_id}} &
+client_secret = {{client_secret}} &
+token = {{refresh_token}}
