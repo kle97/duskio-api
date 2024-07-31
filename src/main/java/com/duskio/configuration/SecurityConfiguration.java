@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,11 +15,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -42,7 +38,6 @@ public class SecurityConfiguration {
     private final ApplicationProperties properties;
 
     @Bean
-    @Order(1)
     public SecurityFilterChain filterChainForResourceServer(HttpSecurity http) throws Exception {
         http.securityMatchers(matcher -> matcher.requestMatchers(Constant.API_PATH +"**"))
             .cors(Customizer.withDefaults())
@@ -50,25 +45,11 @@ public class SecurityConfiguration {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((authorize) -> authorize.requestMatchers(Constant.PUBLIC_API_PATH +"**").permitAll()
                                                            .requestMatchers(Constant.API_PATH +"**").authenticated()
-                                                           .requestMatchers(Constant.ADMIN_API_PATH +"**").hasAuthority(Constant.ROLE_ADMIN)
+                                                           .requestMatchers(Constant.ADMIN_API_PATH +"**")
+                                                           .permitAll()
+//                                                           .hasAuthority(Constant.ROLE_ADMIN)
                                                            .anyRequest().hasAuthority(Constant.ROLE_ADMIN))
             .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain filterChainForOauth2Client(HttpSecurity http) throws Exception {
-        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
-            .cors(Customizer.withDefaults())
-            .csrf(Customizer.withDefaults())
-            .oauth2Client(Customizer.withDefaults())
-            .oauth2Login(Customizer.withDefaults())
-            .logout(logout -> logout.addLogoutHandler(getOidcLogoutHandler()).logoutSuccessUrl(properties.homeEndpoint()))
-            .authorizeHttpRequests((authorize) -> authorize.requestMatchers(properties.publicEndpoints()).permitAll()
-                                                           .requestMatchers(Constant.PUBLIC_PATH +"**").permitAll()
-//                                                           .requestMatchers(Constant.ADMIN_PATH +"**").permitAll()
-                                                           .anyRequest().hasAuthority(Constant.ROLE_ADMIN));
         return http.build();
     }
 
@@ -101,18 +82,6 @@ public class SecurityConfiguration {
                 }
             }
             return mappedAuthorities;
-        };
-    }
-    
-    private LogoutHandler getOidcLogoutHandler() {
-        return (request, response, authentication) -> {
-            OidcUser user = (OidcUser) authentication.getPrincipal();
-            String logoutUrl = user.getIssuer() + "/protocol/openid-connect/logout";
-            RestClient.create()
-                      .get()
-                      .uri(logoutUrl + "?id_token_hint={token}", user.getIdToken().getTokenValue())
-                      .retrieve()
-                      .toEntity(String.class);
         };
     }
 }

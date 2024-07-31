@@ -5,7 +5,6 @@ import com.duskio.common.ScrollRequest;
 import com.duskio.common.ScrollResponse;
 import com.duskio.common.constant.Constant;
 import com.duskio.configuration.GlobalExceptionHandler;
-import com.duskio.features.post.PostResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +29,14 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @WebMvcTest
-@ContextConfiguration(classes = {CategoryAdminRestController.class, GlobalExceptionHandler.class})
+@ContextConfiguration(classes = {CategoryAdminController.class, GlobalExceptionHandler.class})
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CategoryAdminRestControllerTest extends BaseTest {
+public class CategoryAdminControllerTest extends BaseTest {
     private static final String API_PATH = Constant.ADMIN_API_PATH + "categories";
     
     private final MockMvc mockMvc;
@@ -50,11 +48,11 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindById() throws Exception {
-        CategoryResponse expected = new CategoryResponse(1, "New", List.of());
+        CategoryDto expected = new CategoryDto(1, "New");
         Mockito.when(categoryDao.findById(1)).thenReturn(Optional.of(expected));
         String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH + "/1"))
                                  .andReturn().getResponse().getContentAsString();
-        CategoryResponse actual = objectMapper.readValue(response, CategoryResponse.class);
+        CategoryDto actual = objectMapper.readValue(response, CategoryDto.class);
         softly().as("findById").assertThat(actual).isEqualTo(expected);
     }
 
@@ -74,40 +72,14 @@ public class CategoryAdminRestControllerTest extends BaseTest {
 
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
-    public void testFindByIdWithOneToMany() throws Exception {
-        CategoryResponse expected = new CategoryResponse(1, "New", List.of(new PostResponse(1, "Post", "Description", LocalDateTime.now(), List.of()),
-                                                                           new PostResponse(2, "Post", "Description", LocalDateTime.now(), List.of())));
-        Mockito.when(categoryDao.findByIdWithPosts(1)).thenReturn(Optional.of(expected));
-        String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH  + "/1/posts"))
-                                 .andReturn().getResponse().getContentAsString();
-        CategoryResponse actual = objectMapper.readValue(response, CategoryResponse.class);
-        softly().as("findByIdWithOneToMany").assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    @WithMockUser(roles = Constant.ROLE_ADMIN)
-    public void testFindByIdWithOneToManyInvalid() throws Exception {
-        Mockito.when(categoryDao.findByIdWithPosts(1)).thenReturn(Optional.empty());
-        String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH  + "/1/posts"))
-                                 .andReturn().getResponse().getContentAsString();
-        ProblemDetail problem = objectMapper.readValue(response, ProblemDetail.class);
-        softly().assertThat(problem.getType()).isEqualTo(new URI("about:blank"));
-        softly().assertThat(problem.getTitle()).isEqualTo("Not Found");
-        softly().assertThat(problem.getStatus()).isEqualTo(404);
-        softly().assertThat(problem.getDetail()).isEqualTo("Resource not found!");
-        softly().assertThat(problem.getInstance()).isEqualTo(new URI(API_PATH  + "/1/posts"));
-    }
-
-    @Test
-    @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindAll() throws Exception {
-        List<CategoryResponse> expectedResponses = List.of(new CategoryResponse(1, "Category 1", List.of()),
-                                                           new CategoryResponse(2, "Category 2", List.of()),
-                                                           new CategoryResponse(3, "Category 3", List.of()));
+        List<CategoryDto> expectedResponses = List.of(new CategoryDto(1, "Category 1"),
+                                                      new CategoryDto(2, "Category 2"),
+                                                      new CategoryDto(3, "Category 3"));
         Mockito.when(categoryDao.findAll()).thenReturn(expectedResponses);
         String response = mockMvc.perform(MockMvcRequestBuilders.get(API_PATH))
                                  .andReturn().getResponse().getContentAsString();
-        List<CategoryResponse> results = objectMapper.readValue(response, new TypeReference<>() {});
+        List<CategoryDto> results = objectMapper.readValue(response, new TypeReference<>() {});
         softly().as("findAll").assertThat(results).containsExactlyElementsOf(expectedResponses);
     }
 
@@ -115,9 +87,9 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindPage() throws Exception {
         PageRequest request = PageRequest.of(0, 2, Sort.Direction.DESC, "category_id");
-        PagedModel<CategoryResponse> expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryResponse(3, "Category 3", List.of()),
-                                                                                        new CategoryResponse(2, "Category 2", List.of())), 
-                                                                                request, 2));
+        PagedModel<CategoryDto> expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryDto(3, "Category 3"),
+                                                                                   new CategoryDto(2, "Category 2")),
+                                                                           request, 2));
         Mockito.when(categoryDao.findPage(Mockito.any(PageRequest.class))).thenReturn(expected);
         MockHttpServletRequestBuilder mockBuilder = MockMvcRequestBuilders.get(API_PATH + "/page");
         String response = mockMvc.perform(mockBuilder.param("page", "0").param("size", "2").param("sort", "category_id,desc"))
@@ -127,7 +99,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
         softly().as("findPage").assertThat(response).isEqualTo(objectMapper.writeValueAsString(expected));
 
         request = PageRequest.of(1, 2, Sort.Direction.DESC, "category_id");
-        expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryResponse(1, "Category 1", List.of())), request, 2));
+        expected = new PagedModel<>(new PageImpl<>(List.of(new CategoryDto(1, "Category 1")), request, 2));
         Mockito.when(categoryDao.findPage(request)).thenReturn(expected);
         mockBuilder = MockMvcRequestBuilders.get(API_PATH + "/page");
         response = mockMvc.perform(mockBuilder.param("page", "1").param("size", "2").param("sort", "category_id,desc"))
@@ -168,16 +140,16 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testFindScroll()throws Exception {
-        ScrollResponse<CategoryResponse> expected = new ScrollResponse<>(List.of(new CategoryResponse(3, "Category 3", List.of()),
-                                                                                 new CategoryResponse(2, "Category 2", List.of())), 
-                                                                         2);
+        ScrollResponse<CategoryDto> expected = new ScrollResponse<>(List.of(new CategoryDto(3, "Category 3"),
+                                                                            new CategoryDto(2, "Category 2")),
+                                                                    2);
         Mockito.when(categoryDao.findScroll(Mockito.any(ScrollRequest.class))).thenReturn(expected);
         MockHttpServletRequestBuilder mockBuilder = MockMvcRequestBuilders.get(API_PATH + "/scroll");
         String response = mockMvc.perform(mockBuilder.param("direction", "FORWARD").param("limit", "2").param("sort", "category_id,desc"))
                                  .andReturn().getResponse().getContentAsString();
         softly().assertThat(response).isEqualTo(objectMapper.writeValueAsString(expected));
 
-        expected = new ScrollResponse<>(List.of(new CategoryResponse(1, "Category 1", List.of())), 2);
+        expected = new ScrollResponse<>(List.of(new CategoryDto(1, "Category 1")), 2);
         Mockito.when(categoryDao.findScroll(Mockito.any(ScrollRequest.class))).thenReturn(expected);
         mockBuilder = MockMvcRequestBuilders.get(API_PATH + "/scroll");
         response = mockMvc.perform(mockBuilder.param("cursor", "2").param("direction", "FORWARD")
@@ -213,7 +185,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testSave() throws Exception {
-        CategoryRequest request = new CategoryRequest("New");
+        CategorySaveDto request = new CategorySaveDto("New");
         Mockito.when(categoryDao.save(request)).thenReturn(1);
         String response = mockMvc.perform(MockMvcRequestBuilders.post(API_PATH)
                                                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -226,7 +198,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testSaveInvalid() throws Exception {
-        CategoryRequest request = new CategoryRequest("");
+        CategorySaveDto request = new CategorySaveDto("");
         String response = mockMvc.perform(MockMvcRequestBuilders.post(API_PATH)
                                                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -239,7 +211,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
         softly().assertThat(problem.getDetail()).isEqualTo("Invalid request content.");
         softly().assertThat(problem.getInstance()).isEqualTo(new URI(API_PATH));
 
-        request = new CategoryRequest("a".repeat(256));
+        request = new CategorySaveDto("a".repeat(256));
         response = mockMvc.perform(MockMvcRequestBuilders.post(API_PATH)
                                                          .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                          .contentType(MediaType.APPLICATION_JSON)
@@ -256,7 +228,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testUpdate() throws Exception {
-        CategoryRequest request = new CategoryRequest("Updated");
+        CategoryDto request = new CategoryDto(1, "Updated");
         Mockito.when(categoryDao.update(1, request)).thenReturn(true);
         String response = mockMvc.perform(MockMvcRequestBuilders.put(API_PATH + "/1")
                                                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -269,7 +241,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
     @Test
     @WithMockUser(roles = Constant.ROLE_ADMIN)
     public void testUpdateInvalid() throws Exception {
-        CategoryRequest request = new CategoryRequest("");
+        CategorySaveDto request = new CategorySaveDto("");
         String response = mockMvc.perform(MockMvcRequestBuilders.put(API_PATH + "/1")
                                                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -282,7 +254,7 @@ public class CategoryAdminRestControllerTest extends BaseTest {
         softly().assertThat(problem.getDetail()).isEqualTo("Invalid request content.");
         softly().assertThat(problem.getInstance()).isEqualTo(new URI(API_PATH + "/1"));
 
-        request = new CategoryRequest("a".repeat(256));
+        request = new CategorySaveDto("a".repeat(256));
         response = mockMvc.perform(MockMvcRequestBuilders.put(API_PATH + "/1")
                                                          .with(SecurityMockMvcRequestPostProcessors.csrf())
                                                          .contentType(MediaType.APPLICATION_JSON)
@@ -315,5 +287,4 @@ public class CategoryAdminRestControllerTest extends BaseTest {
                                  .andReturn().getResponse().getContentAsString();
         softly().as("Delete invalid").assertThat(objectMapper.readValue(response, Integer.class)).isEqualTo(0);
     }
-    
 }

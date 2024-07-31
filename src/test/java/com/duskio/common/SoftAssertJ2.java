@@ -109,7 +109,7 @@ public class SoftAssertJ2 extends SoftAssertions {
 
     private void logFail(String message) {
         message = message.trim().replaceAll("\\s+", " ").replace("Expecting", "expected");
-        getLogger().info("   " + AnsiColor.RED_BOLD + "FAIL" + AnsiColor.RESET + "   " + message);
+        getLogger().error("   " + AnsiColor.RED_BOLD + "FAIL" + AnsiColor.RESET + "   " + message);
     }
 
     private Logger getLogger() {
