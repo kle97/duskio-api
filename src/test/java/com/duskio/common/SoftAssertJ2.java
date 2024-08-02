@@ -1,6 +1,7 @@
 package com.duskio.common;
 
 import com.duskio.common.constant.AnsiColor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -13,6 +14,7 @@ import org.assertj.core.description.LazyTextDescription;
 import org.assertj.core.description.TextDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.web.PagedModel;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.util.ArrayList;
@@ -137,7 +139,14 @@ public class SoftAssertJ2 extends SoftAssertions {
         }
 
         if (savedActual.get() != null) {
-            logPass("[" + message + "] " + savedActual.get().toString());
+            String toString = savedActual.get().toString();
+            if (savedActual.get() instanceof PagedModel<?>) {
+                try {
+                    toString = objectMapper.writeValueAsString(savedActual.get());
+                } catch (JsonProcessingException ignored) {
+                }
+            }
+            logPass("[" + message + "] " + toString);
             savedActual.remove();
         }
     }
