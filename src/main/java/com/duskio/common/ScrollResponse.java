@@ -1,10 +1,12 @@
 package com.duskio.common;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
+@ToString
 public class ScrollResponse<T> {
     
     private final List<T> content;

@@ -20,34 +20,34 @@ import java.util.Optional;
 public interface CategoryDao {
 
     @SqlQuery("select * from category where category_id=?")
-    Optional<CategoryDto> findById(int id);
+    Optional<CategoryResponse> findById(int id);
 
     @SqlQuery("select * from category")
-    List<CategoryDto> findAll();
+    List<CategoryResponse> findAll();
 
     @SqlQuery("select * from category <queryString>")
-    List<CategoryDto> findPage(@Define String queryString);
+    List<CategoryResponse> findPage(@Define String queryString);
 
     @SqlQuery("select * from category <queryString>")
-    List<CategoryDto> findScroll(@Define String queryString);
+    List<CategoryResponse> findScroll(@Define String queryString);
 
     @SqlQuery("select count(*) from category")
     int count();
 
-    default PagedModel<CategoryDto> findPage(Pageable pageable) {
+    default PagedModel<CategoryResponse> findPage(Pageable pageable) {
         return new PagedModel<>(new PageImpl<>(findPage(PageableHelper.getQueryString(pageable)), pageable, count()));
     }
 
-    default ScrollResponse<CategoryDto> findScroll(ScrollRequest scrollRequest) {
+    default ScrollResponse<CategoryResponse> findScroll(ScrollRequest scrollRequest) {
         return new ScrollResponse<>(findScroll(PageableHelper.getQueryString(scrollRequest)), scrollRequest.limit());
     }
 
     @SqlUpdate("insert into category (name) values (:name)")
     @GetGeneratedKeys
-    int save(@BindMethods CategorySaveDto categorySaveDto);
+    int save(@BindMethods CategoryRequest categoryRequest);
 
-    @SqlUpdate("update category set name=:name, category_id=:categoryId where category_id=:id")
-    boolean update(int id, @BindMethods CategoryDto categoryDto);
+    @SqlUpdate("update category set name=:name where category_id=:id")
+    boolean update(int id, @BindMethods CategoryRequest categoryRequest);
 
     @SqlUpdate("delete from category where category_id=?")
     int deleteById(int id);

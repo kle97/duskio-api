@@ -30,32 +30,32 @@ public class CategoryAdminController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find category by id")
-    public ResponseEntity<CategoryDto> findById(@PathVariable int id) {
+    public ResponseEntity<CategoryResponse> findById(@PathVariable int id) {
         return ResponseEntity.ok().body(categoryDao.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
     @GetMapping("")
     @Operation(summary = "Find all instances of category")
-    public ResponseEntity<List<CategoryDto>> findAll() {
+    public ResponseEntity<List<CategoryResponse>> findAll() {
         return ResponseEntity.ok().body(categoryDao.findAll());
     }
 
     @GetMapping("/page")
     @Operation(summary = "Find instances of category with offset pagination")
-    public ResponseEntity<PagedModel<CategoryDto>> findPage(@ParameterObject Pageable pageable) {
+    public ResponseEntity<PagedModel<CategoryResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(categoryDao.findPage(pageable));
     }
 
     @GetMapping("/scroll")
     @Operation(summary = "Find instances of category with keyset pagination")
-    public ResponseEntity<ScrollResponse<CategoryDto>> findScroll(@ParameterObject ScrollRequest scrollRequest) {
+    public ResponseEntity<ScrollResponse<CategoryResponse>> findScroll(@ParameterObject ScrollRequest scrollRequest) {
         return ResponseEntity.ok().body(categoryDao.findScroll(scrollRequest));
     }
 
     @PostMapping("")
     @Operation(summary = "Create new category")
-    public ResponseEntity<Integer> save(@RequestBody @Validated CategorySaveDto categorySaveDto) {
-        int id = categoryDao.save(categorySaveDto);
+    public ResponseEntity<Integer> save(@RequestBody @Validated CategoryRequest categoryRequest) {
+        int id = categoryDao.save(categoryRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                                                   .buildAndExpand(id).toUri();
         return ResponseEntity.created(location).body(id);
@@ -63,8 +63,8 @@ public class CategoryAdminController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update category")
-    public ResponseEntity<Boolean> update(@PathVariable int id, @RequestBody @Validated CategoryDto categoryDto) {
-        return ResponseEntity.ok(categoryDao.update(id, categoryDto));
+    public ResponseEntity<Boolean> update(@PathVariable int id, @RequestBody @Validated CategoryRequest categoryRequest) {
+        return ResponseEntity.ok(categoryDao.update(id, categoryRequest));
     }
 
     @DeleteMapping("/{id}")

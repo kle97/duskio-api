@@ -12,12 +12,13 @@ import liquibase.exception.DatabaseException;
 import org.jdbi.v3.core.ConnectionFactory;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.statement.Slf4JSqlLogger;
+import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.spring5.SpringConnectionFactory;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -25,17 +26,18 @@ import java.sql.SQLException;
 
 public abstract class BaseDaoTest extends BaseTest {
 
+    private boolean logJdbiException;
     private Jdbi jdbi;
     private final JdbiUtils jdbiUtils = getJdbi().onDemand(JdbiUtils.class);
     
-    @BeforeAll
-    public void baseDaoTestBeforeAll() {
+    @BeforeClass
+    public void baseDaoTestBeforeClass() {
         jdbi = getJdbi();
         updateWithLiquibase();
     }
 
-    @AfterEach
-    public void baseDaoTestAfterEach() {
+    @AfterMethod
+    public void baseDaoTestAfterMethod() {
         getJdbiUtils().truncateAllTables();
     }
     
@@ -56,6 +58,14 @@ public abstract class BaseDaoTest extends BaseTest {
                        .installPlugin(new SqlObjectPlugin())
                        .registerRowMapper(new AutoRowMapperFactory());
         }
+        jdbi.setSqlLogger(new Slf4JSqlLogger() {
+            @Override
+            public void logException(StatementContext context, SQLException ex) {
+                if (logJdbiException) {
+                    super.logException(context, ex);
+                }
+            }
+        });
         return jdbi;
     }
     

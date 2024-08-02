@@ -1,13 +1,14 @@
 package com.duskio.common;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 
-public abstract class BaseTest {
-    
+public class BaseSpringTest extends AbstractTestNGSpringContextTests {
+
     protected SoftAssertJ2 softly() {
         return SoftAssertJ2.getInstance();
     }

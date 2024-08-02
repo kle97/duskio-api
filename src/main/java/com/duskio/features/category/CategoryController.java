@@ -24,13 +24,13 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find category by id")
-    public ResponseEntity<CategoryDto> findById(@PathVariable int id) {
+    public ResponseEntity<CategoryResponse> findById(@PathVariable int id) {
         return ResponseEntity.ok().body(categoryDao.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
     @GetMapping("")
     @Operation(summary = "Find all instances of category")
-    public ResponseEntity<List<CategoryDto>> findAll() {
+    public ResponseEntity<List<CategoryResponse>> findAll() {
         return ResponseEntity.ok().body(categoryDao.findAll());
     }
 }
