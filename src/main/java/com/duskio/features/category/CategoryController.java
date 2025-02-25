@@ -22,6 +22,8 @@ public class CategoryController {
 
     private final CategoryDao categoryDao;
 
+    private final CategoryRepository categoryRepository;
+
     @GetMapping("/{id}")
     @Operation(summary = "Find category by id")
     public ResponseEntity<CategoryResponse> findById(@PathVariable int id) {
@@ -32,5 +34,11 @@ public class CategoryController {
     @Operation(summary = "Find all instances of category")
     public ResponseEntity<List<CategoryResponse>> findAll() {
         return ResponseEntity.ok().body(categoryDao.findAll());
+    }
+
+    @GetMapping("/custom")
+    @Operation(summary = "Find all instances of category")
+    public ResponseEntity<List<CategoryResponse>> findAllBy() {
+        return ResponseEntity.ok().body(categoryRepository.findAllBy());
     }
 }

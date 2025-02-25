@@ -64,6 +64,7 @@ public class SecurityConfiguration {
     }
     
     @Bean
+    @SuppressWarnings("unchecked")
     public GrantedAuthoritiesMapper getGrantedAuthoritiesMapper() {
         return authorities -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
