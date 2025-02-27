@@ -3,7 +3,7 @@ spring:
     livereload:
       enabled: true
   datasource:
-    url: jdbc:h2:file:./duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;DATABASE_TO_LOWER=TRUE;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;NON_KEYWORDS=VALUE;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE
     username: sa
     password: password
     driver-class-name: org.h2.Driver

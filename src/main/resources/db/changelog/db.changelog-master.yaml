@@ -5,3 +5,12 @@ databaseChangeLog:
   - includeAll:
       relativeToChangelogFile: true
       path: data
+  - changeSet: 
+      id: loadInitialData
+      author: admin
+      changes:
+        - loadData:
+            tableName: author
+            relativeToChangelogFile: true
+            file: data/author.csv
+            quotchar: '`'
