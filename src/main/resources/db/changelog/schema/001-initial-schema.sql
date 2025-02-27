@@ -12,6 +12,7 @@ CREATE TABLE author
     created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (author_id)
 );
 
@@ -25,6 +26,7 @@ CREATE TABLE alternate_name
     created_at        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by  VARCHAR(255) NOT NULL,
     last_modified_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision          INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (alternate_name_id),
     FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE
 );
@@ -40,6 +42,7 @@ CREATE TABLE author_link
     created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (author_link_id),
     FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE
 );
@@ -54,6 +57,7 @@ CREATE TABLE work
     created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (work_id)
 );
 
@@ -76,6 +80,7 @@ CREATE TABLE subject
     created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (subject_id)
 );
 
@@ -99,6 +104,7 @@ CREATE TABLE rating
     created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (rating_id),
     FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE,
 );
@@ -112,6 +118,7 @@ CREATE TABLE publisher
     created_at       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (publisher_id)
 );
 
@@ -147,6 +154,7 @@ CREATE TABLE edition
     created_at          TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by    VARCHAR(255) NOT NULL,
     last_modified_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision            INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (edition_id),
     FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE SET NULL,
     FOREIGN KEY (publisher_id) REFERENCES publisher (publisher_id) ON DELETE SET NULL
