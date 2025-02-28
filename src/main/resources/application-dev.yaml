@@ -1,9 +1,21 @@
+duskio:
+  public-endpoints:
+    - ${springdoc.api-docs.path}
+    - /rapidoc.html
+    - /error
+  allowed-origins:
+    - "*"
+  keycloak-endpoint: http://localhost:8081
+  keycloak-realm: duskio
+  keycloak-client: duskio-api
+  home-endpoint: http://localhost:8080
+
 spring:
   devtools:
     livereload:
       enabled: true
   datasource:
-    url: jdbc:h2:file:./duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;NON_KEYWORDS=VALUE;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;NON_KEYWORDS=VALUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE
     username: sa
     password: password
     driver-class-name: org.h2.Driver
@@ -43,17 +55,4 @@ springdoc:
   api-docs:
     enabled: true
     path: /v3/api-docs
-
-
-duskio:
-  public-endpoints: 
-    - ${springdoc.api-docs.path}
-    - /rapidoc.html
-    - /error
-  allowed-origins:
-    - "*"
-  keycloak-endpoint: http://localhost:8081
-  keycloak-realm: duskio
-  keycloak-client: duskio-api
-  home-endpoint: http://localhost:8080
   

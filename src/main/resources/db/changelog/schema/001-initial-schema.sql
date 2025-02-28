@@ -2,9 +2,9 @@ CREATE TABLE author
 (
     author_id        INT          NOT NULL AUTO_INCREMENT,
     author_name      VARCHAR(512) NOT NULL,
-    birth_date       DATE,
-    death_date       DATE,
-    author_date      DATE,
+    birth_date       VARCHAR(255),
+    death_date       VARCHAR(255),
+    author_date      VARCHAR(255),
     biography        VARCHAR(8192),
     photo            VARCHAR(255),
     ol_key           VARCHAR(255),
@@ -64,11 +64,16 @@ CREATE TABLE work
 
 CREATE TABLE author_work
 (
-    book_id   INT NOT NULL,
-    author_id INT NOT NULL,
-    PRIMARY KEY (book_id, author_id),
-    FOREIGN KEY (book_id) REFERENCES work (work_id) ON DELETE CASCADE,
-    FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE
+    author_id        INT          NOT NULL,
+    work_id          INT          NOT NULL,
+    created_by       VARCHAR(255) NOT NULL,
+    created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by VARCHAR(255) NOT NULL,
+    last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
+    PRIMARY KEY (author_id, work_id),
+    FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE,
+    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE
 );
 
 
@@ -87,19 +92,24 @@ CREATE TABLE subject
 
 CREATE TABLE work_subject
 (
-    subject_id INT NOT NULL,
-    work_id    INT NOT NULL,
-    PRIMARY KEY (subject_id, work_id),
-    FOREIGN KEY (subject_id) REFERENCES subject (subject_id) ON DELETE CASCADE,
-    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE
+    work_id          INT          NOT NULL,
+    subject_id       INT          NOT NULL,
+    created_by       VARCHAR(255) NOT NULL,
+    created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by VARCHAR(255) NOT NULL,
+    last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
+    PRIMARY KEY (work_id, subject_id),
+    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subject (subject_id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE rating
 (
-    work_id          INT          NOT NULL AUTO_INCREMENT,
+    rating_id        INT          NOT NULL AUTO_INCREMENT,
     score            INT          NOT NULL,
-    rating_id        INT          NOT NULL,
+    work_id          INT          NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
@@ -135,14 +145,14 @@ CREATE TABLE edition
     physical_format     VARCHAR(255),
     physical_dimensions VARCHAR(255),
     weight              VARCHAR(255),
-    isbn10              VARCHAR(255),
-    isbn13              VARCHAR(255),
+    isbn_10             VARCHAR(255),
+    isbn_13             VARCHAR(255),
     oclc_number         VARCHAR(255),
     lccn_number         VARCHAR(255),
     dewey_number        VARCHAR(255),
     lc_classifications  VARCHAR(255),
     language            VARCHAR(255),
-    publish_date        DATE,
+    publish_date        VARCHAR(255),
     publish_country     VARCHAR(255),
     publish_place       VARCHAR(255),
     cover               VARCHAR(255),
