@@ -22,9 +22,8 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <jdbiVersion>3.45.1</jdbiVersion>
-        <springdocVersion>2.5.0</springdocVersion>
-        <testngVersion>7.10.2</testngVersion>
+        <springdocVersion>2.8.5</springdocVersion>
+        <testngVersion>7.11.0</testngVersion>
         <testngEngineVersion>1.0.5</testngEngineVersion>
     </properties>
     
@@ -63,12 +62,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jdbi</groupId>
-            <artifactId>jdbi3-spring5</artifactId>
-            <version>${jdbiVersion}</version>
         </dependency>
 
 <!--        <dependency>-->

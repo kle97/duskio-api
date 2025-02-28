@@ -18,15 +18,15 @@ public class Author extends Auditable {
 
         private String authorName;
 
-        private Date birthDate;
+        private String birthDate;
 
-        private Date deathDate;
+        private String deathDate;
 
-        private Date authorDate;
+        private String authorDate;
 
         private String biography;
 
         private String photo;
 
-        private String olKe;
+        private String olKey;
 }
