@@ -1,27 +1,28 @@
-package com.duskio.features.common;
+package com.duskio.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.*;
-import org.springframework.data.relational.core.mapping.InsertOnlyProperty;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@MappedSuperclass
+@Getter @Setter
 @JsonIgnoreProperties(
-        value = {"createdBy", "createdAt", "lastModifiedBy", "lastModifiedAt"},
+        value = {"createdBy", "createdAt", "lastModifiedBy", "lastModifiedAt", "revision"},
         allowGetters = true
 )
+@EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable {
 
     @CreatedBy
-    @InsertOnlyProperty
     private String createdBy;
 
     @CreatedDate
-    @InsertOnlyProperty
     private LocalDateTime createdAt;
 
     @LastModifiedBy

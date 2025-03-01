@@ -44,9 +44,8 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((authorize) -> authorize.requestMatchers(Constant.PUBLIC_API_PATH +"**").permitAll()
-                                                           .requestMatchers(Constant.API_PATH +"**").authenticated()
-                                                           .requestMatchers(Constant.ADMIN_API_PATH +"**")
-                                                           .permitAll()
+                                                           .requestMatchers(Constant.API_PATH +"**").permitAll()
+                                                           .requestMatchers(Constant.ADMIN_API_PATH +"**").permitAll()
 //                                                           .hasAuthority(Constant.ROLE_ADMIN)
                                                            .anyRequest().hasAuthority(Constant.ROLE_ADMIN))
             .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()));

@@ -1,6 +1,6 @@
 CREATE TABLE author
 (
-    author_id        INT          NOT NULL AUTO_INCREMENT,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
     author_name      VARCHAR(512) NOT NULL,
     birth_date       VARCHAR(255),
     death_date       VARCHAR(255),
@@ -13,44 +13,44 @@ CREATE TABLE author
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (author_id)
+    PRIMARY KEY (id)
 );
 
 
 CREATE TABLE alternate_name
 (
-    alternate_name_id INT          NOT NULL AUTO_INCREMENT,
-    alternate_name    VARCHAR(512) NOT NULL,
-    author_id         INT          NOT NULL,
-    created_by        VARCHAR(255) NOT NULL,
-    created_at        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by  VARCHAR(255) NOT NULL,
-    last_modified_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    revision          INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (alternate_name_id),
-    FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE author_link
-(
-    author_link_id   INT          NOT NULL AUTO_INCREMENT,
-    title            VARCHAR(512),
-    url              VARCHAR(512),
-    author_id        INT          NOT NULL,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
+    alternate_name   VARCHAR(512) NOT NULL,
+    author_id        BIGINT       NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (author_link_id),
-    FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE
+    PRIMARY KEY (id),
+    FOREIGN KEY (author_id) REFERENCES author (id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE author_link
+(
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
+    title            VARCHAR(512),
+    url              VARCHAR(512),
+    author_id        BIGINT       NOT NULL,
+    created_by       VARCHAR(255) NOT NULL,
+    created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by VARCHAR(255) NOT NULL,
+    last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 1,
+    PRIMARY KEY (id),
+    FOREIGN KEY (author_id) REFERENCES author (id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE work
 (
-    work_id          INT          NOT NULL AUTO_INCREMENT,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
     title            VARCHAR(512) NOT NULL,
     ol_key           VARCHAR(255),
     created_by       VARCHAR(255) NOT NULL,
@@ -58,84 +58,84 @@ CREATE TABLE work
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (work_id)
+    PRIMARY KEY (id)
 );
 
 
 CREATE TABLE author_work
 (
-    author_id        INT          NOT NULL,
-    work_id          INT          NOT NULL,
+    author_id        BIGINT       NOT NULL,
+    work_id          BIGINT       NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (author_id, work_id),
-    FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE,
-    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE
+    FOREIGN KEY (author_id) REFERENCES author (id) ON DELETE CASCADE,
+    FOREIGN KEY (work_id) REFERENCES work (id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE subject
 (
-    subject_id       INT          NOT NULL AUTO_INCREMENT,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
     subject_name     VARCHAR(512) NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (subject_id)
+    PRIMARY KEY (id)
 );
 
 
 CREATE TABLE work_subject
 (
-    work_id          INT          NOT NULL,
-    subject_id       INT          NOT NULL,
+    work_id          BIGINT       NOT NULL,
+    subject_id       BIGINT       NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
     PRIMARY KEY (work_id, subject_id),
-    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE,
-    FOREIGN KEY (subject_id) REFERENCES subject (subject_id) ON DELETE CASCADE
+    FOREIGN KEY (work_id) REFERENCES work (id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subject (id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE rating
 (
-    rating_id        INT          NOT NULL AUTO_INCREMENT,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
     score            INT          NOT NULL,
-    work_id          INT          NOT NULL,
+    work_id          BIGINT       NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (rating_id),
-    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE CASCADE
+    PRIMARY KEY (id),
+    FOREIGN KEY (work_id) REFERENCES work (id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE publisher
 (
-    publisher_id     INT          NOT NULL AUTO_INCREMENT,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
     publisher_name   VARCHAR(255) NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (publisher_id)
+    PRIMARY KEY (id)
 );
 
 
 CREATE TABLE edition
 (
-    edition_id          INT          NOT NULL AUTO_INCREMENT,
+    id                  BIGINT       NOT NULL AUTO_INCREMENT,
     title               VARCHAR(512) NOT NULL,
     subtitle            VARCHAR(512),
     description         VARCHAR(8192),
@@ -158,14 +158,14 @@ CREATE TABLE edition
     cover               VARCHAR(255),
     ol_key              VARCHAR(255),
     grade               INT          NOT NULL,
-    publisher_id        INT,
-    work_id             INT,
+    publisher_id        BIGINT,
+    work_id             BIGINT,
     created_by          VARCHAR(255) NOT NULL,
     created_at          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by    VARCHAR(255) NOT NULL,
     last_modified_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision            INT          NOT NULL DEFAULT 1,
-    PRIMARY KEY (edition_id),
-    FOREIGN KEY (work_id) REFERENCES work (work_id) ON DELETE SET NULL,
-    FOREIGN KEY (publisher_id) REFERENCES publisher (publisher_id) ON DELETE SET NULL
+    PRIMARY KEY (id),
+    FOREIGN KEY (work_id) REFERENCES work (id) ON DELETE SET NULL,
+    FOREIGN KEY (publisher_id) REFERENCES publisher (id) ON DELETE SET NULL
 );
