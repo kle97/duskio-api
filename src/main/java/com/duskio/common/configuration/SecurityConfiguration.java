@@ -1,4 +1,4 @@
-package com.duskio.configuration;
+package com.duskio.common.configuration;
 
 import com.duskio.common.constant.Constant;
 import lombok.RequiredArgsConstructor;

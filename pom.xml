@@ -25,6 +25,8 @@
         <springdocVersion>2.8.5</springdocVersion>
         <testngVersion>7.11.0</testngVersion>
         <testngEngineVersion>1.0.5</testngEngineVersion>
+        <mapstructVersion>1.6.3</mapstructVersion>
+        <lombokMapstructBindingVersion>0.2.0</lombokMapstructBindingVersion>
     </properties>
     
     <dependencies>
@@ -73,6 +75,12 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstructVersion}</version>
         </dependency>
 
         <dependency>
@@ -171,10 +179,30 @@
                             <version>${lombok.version}</version>
                         </path>
                         <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombokMapstructBindingVersion}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstructVersion}</version>
+                        </path>
+                        <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>
+                            <version>${project.parent.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    
+                    <!-- Optionally annotate the mappers with the Spring @Component stereotype.
+                         With this option enabled, the generated mappers will be available for
+                         dependency injection as Spring Beans.-->
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </compilerArg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 

@@ -1,4 +1,4 @@
-package com.duskio.configuration;
+package com.duskio.common.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -36,7 +36,7 @@ CREATE TABLE author_link
 (
     id               BIGINT       NOT NULL AUTO_INCREMENT,
     title            VARCHAR(512),
-    url              VARCHAR(512),
+    url              VARCHAR(512) NOT NULL,
     author_id        BIGINT       NOT NULL,
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -7,23 +7,58 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 import static com.duskio.common.constant.Constant.ADMIN_API_PATH;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ADMIN_API_PATH + "authors")
-@Tag(name = "author-admin", description = "Author admin API")
+@Tag(name = "author-admin", description = "Author Admin API")
 public class AuthorAdminController {
     
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
 
-    @GetMapping("/page")
-    @Operation(summary = "Find instances of author with offset pagination")
-    public ResponseEntity<PagedModel<Author>> findPage(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok().body(new PagedModel<>(authorRepository.findAll(pageable)));
+    @GetMapping("/{id}")
+    @Operation(summary = "Find author by id")
+    public ResponseEntity<AuthorResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(authorService.findDTOById(id));
+    }
+
+    @GetMapping("/entity/{id}")
+    @Operation(summary = "Find author entity by id")
+    public ResponseEntity<Author> findEntityById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(authorService.findById(id));
+    }
+
+    @GetMapping("")
+    @Operation(summary = "Find pages of author")
+    public ResponseEntity<PagedModel<AuthorResponse>> findPage(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok().body(new PagedModel<>(authorService.findAll(pageable)));
+    }
+
+    @PostMapping("")
+    @Operation(summary = "Save new author")
+    public ResponseEntity<AuthorResponse> save(@RequestBody @Validated AuthorRequest authorRequest) {
+        var response = authorService.save(authorRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(location).body(response);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update author")
+    public ResponseEntity<AuthorResponse> update(@PathVariable Long id, @RequestBody @Validated AuthorRequest authorRequest) {
+        return ResponseEntity.ok(authorService.update(id, authorRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete author")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        authorService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,4 +1,4 @@
-package com.duskio.features.author;
+package com.duskio.features.work;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
@@ -10,14 +10,11 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface AuthorRepository extends ListPagingAndSortingRepository<Author, Long>, ListCrudRepository<Author, Long> {
+public interface WorkRepository extends ListPagingAndSortingRepository<Work, Long>, ListCrudRepository<Work, Long> {
 
-    @Override
-    @Nonnull
+    @Override @Nonnull
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {
-            "alternateNames.alternateName",
-            "links.title",
-            "links.url"
+            "ratings.score"
     })
-    Page<Author> findAll(@Nonnull Pageable pageable);
+    Page<Work> findAll(@Nonnull Pageable pageable);
 }

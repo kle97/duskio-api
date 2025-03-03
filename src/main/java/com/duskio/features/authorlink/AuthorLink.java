@@ -1,6 +1,7 @@
-package com.duskio.features.author;
+package com.duskio.features.authorlink;
 
 import com.duskio.common.entity.AuditableWithID;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -12,7 +13,9 @@ public class AuthorLink extends AuditableWithID {
 
     private String title;
 
+    @Column(nullable = false)
     private String url;
 
+    @Column(nullable = false)
     private Long authorId;
 }

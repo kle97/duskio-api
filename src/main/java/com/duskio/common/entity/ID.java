@@ -26,11 +26,11 @@ public abstract class ID implements Serializable {
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
         if (other == null) {
             return false;
+        }
+        if (this == other) {
+            return true;
         }
         if (!(other instanceof ID otherObject)) {
             return false;

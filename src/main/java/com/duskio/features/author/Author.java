@@ -1,6 +1,8 @@
 package com.duskio.features.author;
 
 import com.duskio.common.entity.AuditableWithID;
+import com.duskio.features.alternatename.AlternateName;
+import com.duskio.features.authorlink.AuthorLink;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,7 +32,7 @@ public class Author extends AuditableWithID {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "authorId")
-    private Set<AuthorAlternateName> alternateNames = new HashSet<>();
+    private Set<AlternateName> alternateNames = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "authorId")
