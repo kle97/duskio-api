@@ -1,4 +1,4 @@
-package com.duskio.features.worksubject;
+package com.duskio.features.authorwork;
 
 import com.duskio.common.entity.Auditable;
 import jakarta.persistence.EmbeddedId;
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor @AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
-public class WorkSubject extends Auditable {
+public class AuthorWork extends Auditable {
     
     @EmbeddedId
-    private WorkSubjectId id;
+    private AuthorWorkId id;
 }

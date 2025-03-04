@@ -29,12 +29,6 @@ public class SubjectAdminController {
         return ResponseEntity.ok().body(subjectService.findDTOById(id));
     }
 
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find subject entity by id")
-    public ResponseEntity<Subject> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(subjectService.findById(id));
-    }
-
     @GetMapping("")
     @Operation(summary = "Find pages of subject")
     public ResponseEntity<PagedModel<SubjectResponse>> findPage(@ParameterObject Pageable pageable) {

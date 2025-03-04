@@ -1,4 +1,4 @@
-package com.duskio.features.work;
+package com.duskio.features.edition;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,21 +16,21 @@ import static com.duskio.common.constant.Constant.PUBLIC_API_PATH;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(PUBLIC_API_PATH + "works")
-@Tag(name = "work", description = "Work API")
-public class WorkController {
+@RequestMapping(PUBLIC_API_PATH + "editions")
+@Tag(name = "edition", description = "Edition API")
+public class EditionController {
     
-    private final WorkService workService;
+    private final EditionService editionService;
 
     @GetMapping("/{id}")
-    @Operation(summary = "Find work by id")
-    public ResponseEntity<WorkResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(workService.findDTOById(id));
+    @Operation(summary = "Find edition by id")
+    public ResponseEntity<EditionResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(editionService.findDTOById(id));
     }
 
     @GetMapping("")
-    @Operation(summary = "Find pages of work")
-    public ResponseEntity<PagedModel<WorkPageResponse>> findPage(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok().body(new PagedModel<>(workService.findAll(pageable)));
+    @Operation(summary = "Find pages of edition")
+    public ResponseEntity<PagedModel<EditionResponse>> findPage(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok().body(new PagedModel<>(editionService.findAll(pageable)));
     }
 }

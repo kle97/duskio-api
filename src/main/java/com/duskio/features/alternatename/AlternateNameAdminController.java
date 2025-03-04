@@ -20,12 +20,6 @@ public class AlternateNameAdminController {
     
     private final AlternateNameService alternateNameService;
 
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find alternate name entity by id")
-    public ResponseEntity<AlternateName> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(alternateNameService.findById(id));
-    }
-
     @PostMapping("")
     @Operation(summary = "Save new alternate name")
     public ResponseEntity<AlternateNameResponse> save(@RequestBody @Validated AlternateNameRequest alternateNameRequest) {

@@ -29,12 +29,6 @@ public class AuthorAdminController {
         return ResponseEntity.ok().body(authorService.findDTOById(id));
     }
 
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find author entity by id")
-    public ResponseEntity<Author> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(authorService.findById(id));
-    }
-
     @GetMapping("")
     @Operation(summary = "Find pages of author")
     public ResponseEntity<PagedModel<AuthorResponse>> findPage(@ParameterObject Pageable pageable) {

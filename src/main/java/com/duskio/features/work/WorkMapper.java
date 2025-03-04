@@ -10,11 +10,13 @@ import org.mapstruct.factory.Mappers;
 public interface WorkMapper {
 
     WorkMapper INSTANCE = Mappers.getMapper(WorkMapper.class);
-
+    
     WorkResponse toWorkResponse(Work work);
+    
+    WorkPageResponse toWorkPageResponse(Work work);
 
-    WorkEntityResponse toWorkEntityResponse(Work work);
-
+    WorkSimpleResponse toWorkSimpleResponse(Work work);
+    
     @Mapping(target = "ratings", ignore = true)
     @Mapping(target = "subjects", ignore = true)
     Work toWork(WorkRequest workRequest);

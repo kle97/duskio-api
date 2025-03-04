@@ -23,7 +23,6 @@ public class CustomAuditorAware implements AuditorAware<String> {
 
         if (authentication == null || !authentication.isAuthenticated()
                 || authentication instanceof AnonymousAuthenticationToken) {
-            log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             return Optional.of("Anonymous");
 //            return Optional.empty();
         }

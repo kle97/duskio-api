@@ -25,25 +25,19 @@ public class WorkAdminController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find work by id")
-    public ResponseEntity<WorkEntityResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<WorkResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(workService.findDTOById(id));
-    }
-
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find work entity by id")
-    public ResponseEntity<Work> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(workService.findById(id));
     }
 
     @GetMapping("")
     @Operation(summary = "Find pages of work")
-    public ResponseEntity<PagedModel<WorkResponse>> findPage(@ParameterObject Pageable pageable) {
+    public ResponseEntity<PagedModel<WorkPageResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(new PagedModel<>(workService.findAll(pageable)));
     }
 
     @PostMapping("")
     @Operation(summary = "Save new work")
-    public ResponseEntity<WorkResponse> save(@RequestBody @Validated WorkRequest workRequest) {
+    public ResponseEntity<WorkSimpleResponse> save(@RequestBody @Validated WorkRequest workRequest) {
         var response = workService.save(workRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(location).body(response);
@@ -51,7 +45,7 @@ public class WorkAdminController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update work")
-    public ResponseEntity<WorkResponse> update(@PathVariable Long id, @RequestBody @Validated WorkRequest workRequest) {
+    public ResponseEntity<WorkSimpleResponse> update(@PathVariable Long id, @RequestBody @Validated WorkRequest workRequest) {
         return ResponseEntity.ok(workService.update(id, workRequest));
     }
 

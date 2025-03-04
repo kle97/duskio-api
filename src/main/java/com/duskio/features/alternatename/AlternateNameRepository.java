@@ -1,6 +1,6 @@
 package com.duskio.features.alternatename;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AlternateNameRepository extends CrudRepository<AlternateName, Long> {
+public interface AlternateNameRepository extends JpaRepository<AlternateName, Long> {
 }

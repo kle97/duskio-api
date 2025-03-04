@@ -7,7 +7,7 @@ import java.util.Set;
 
 public record AuthorResponse(
         Long id,
-        String  birthDate,
+        String birthDate,
         String deathDate,
         String authorDate,
         String biography,

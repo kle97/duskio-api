@@ -29,12 +29,6 @@ public class RatingAdminController {
         return ResponseEntity.ok().body(ratingService.findDTOById(id));
     }
 
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find rating entity by id")
-    public ResponseEntity<Rating> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(ratingService.findById(id));
-    }
-
     @GetMapping("")
     @Operation(summary = "Find pages of rating")
     public ResponseEntity<PagedModel<RatingResponse>> findPage(@ParameterObject Pageable pageable) {

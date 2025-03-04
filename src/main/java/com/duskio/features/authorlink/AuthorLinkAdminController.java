@@ -20,12 +20,6 @@ public class AuthorLinkAdminController {
     
     private final AuthorLinkService authorLinkService;
 
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find author link entity by id")
-    public ResponseEntity<AuthorLink> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(authorLinkService.findById(id));
-    }
-
     @PostMapping("")
     @Operation(summary = "Save new author link")
     public ResponseEntity<AuthorLinkResponse> save(@RequestBody @Validated AuthorLinkRequest authorLinkRequest) {

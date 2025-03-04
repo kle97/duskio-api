@@ -1,6 +1,7 @@
 package com.duskio.features.work;
 
 import com.duskio.common.entity.AuditableWithID;
+import com.duskio.features.author.Author;
 import com.duskio.features.rating.Rating;
 import com.duskio.features.subject.Subject;
 import jakarta.persistence.*;
@@ -22,11 +23,19 @@ public class Work extends AuditableWithID {
 
     private String olKey;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "work_id")
     private Set<Rating> ratings = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "work_subject", joinColumns = @JoinColumn(name = "work_id"), inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "work_subject", 
+               joinColumns = @JoinColumn(name = "work_id"), 
+               inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private Set<Subject> subjects = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "author_work",
+               joinColumns = @JoinColumn(name = "work_id"),
+               inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors = new HashSet<>();
 }

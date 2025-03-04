@@ -29,12 +29,6 @@ public class PublisherAdminController {
         return ResponseEntity.ok().body(publisherService.findDTOById(id));
     }
 
-    @GetMapping("/entity/{id}")
-    @Operation(summary = "Find publisher entity by id")
-    public ResponseEntity<Publisher> findEntityById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(publisherService.findById(id));
-    }
-
     @GetMapping("")
     @Operation(summary = "Find pages of publisher")
     public ResponseEntity<PagedModel<PublisherResponse>> findPage(@ParameterObject Pageable pageable) {

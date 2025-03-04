@@ -21,25 +21,25 @@ public class WorkService {
     }
 
     @Transactional(readOnly = true)
-    public WorkEntityResponse findDTOById(Long id) {
-        return workMapper.toWorkEntityResponse(findById(id));
+    public WorkResponse findDTOById(Long id) {
+        return workMapper.toWorkResponse(findById(id));
     }
 
     @Transactional(readOnly = true)
-    public Page<WorkResponse> findAll(Pageable pageable) {
-        return workRepository.findAll(pageable).map(workMapper::toWorkResponse);
+    public Page<WorkPageResponse> findAll(Pageable pageable) {
+        return workRepository.findAll(pageable).map(workMapper::toWorkPageResponse);
     }
 
     @Transactional
-    public WorkResponse save(WorkRequest workRequest) {
+    public WorkSimpleResponse save(WorkRequest workRequest) {
         Work transientWork = workMapper.toWork(workRequest);
-        return workMapper.toWorkResponse(workRepository.save(transientWork));
+        return workMapper.toWorkSimpleResponse(workRepository.save(transientWork));
     }
 
     @Transactional
-    public WorkResponse update(Long id, WorkRequest workRequest) {
+    public WorkSimpleResponse update(Long id, WorkRequest workRequest) {
         Work currentWork = findById(id);
-        return workMapper.toWorkResponse(workMapper.toExistingWork(workRequest, currentWork));
+        return workMapper.toWorkSimpleResponse(workMapper.toExistingWork(workRequest, currentWork));
     }
 
     @Transactional
