@@ -2,29 +2,31 @@ package com.duskio.features.work;
 
 import com.duskio.common.entity.AuditableWithID;
 import com.duskio.features.rating.Rating;
-import com.duskio.features.worksubject.WorkSubject;
+import com.duskio.features.subject.Subject;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder @Getter @Setter @ToString
+@NoArgsConstructor @Getter @Setter
 public class Work extends AuditableWithID {
 
     @Column(nullable = false)
     private String title;
 
     private String olKey;
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "workId")
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "work_id")
     private Set<Rating> ratings = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "subjectId")
-    private Set<WorkSubject> subjects = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "work_subject", joinColumns = @JoinColumn(name = "work_id"), inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    private Set<Subject> subjects = new HashSet<>();
 }

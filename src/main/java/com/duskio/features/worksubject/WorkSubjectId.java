@@ -12,17 +12,17 @@ import java.util.Objects;
 
 @Embeddable
 @NoArgsConstructor @AllArgsConstructor
-@Getter @Setter @ToString
+@Getter @Setter
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"work_id", "subject_id"})})
 public class WorkSubjectId implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 42L;
 
-    @Column(nullable = false)
+    @Column(name = "work_id", nullable = false)
     private Long workId;
 
-    @Column(nullable = false)
+    @Column(name = "subject_id", nullable = false)
     private Long subjectId;
 
     @Override

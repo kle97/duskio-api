@@ -24,7 +24,7 @@ public class WorkController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find work by id")
-    public ResponseEntity<WorkResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<WorkEntityResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(workService.findDTOById(id));
     }
 

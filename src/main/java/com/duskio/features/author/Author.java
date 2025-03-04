@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder @Getter @Setter @ToString
+@Getter @Setter @ToString
 public class Author extends AuditableWithID {
 
     @Column(nullable = false)

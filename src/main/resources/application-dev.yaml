@@ -5,9 +5,9 @@ spring:
   jpa:
     open-in-view: false
     show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
     url: jdbc:h2:file:./duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;NON_KEYWORDS=VALUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE
     username: sa

@@ -1,5 +1,6 @@
 package com.duskio.common.configuration;
 
+import com.duskio.common.repository.CustomRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(ApplicationProperties.class)
-@EnableJpaRepositories(basePackages = {"com.duskio.features"})
+@EnableJpaRepositories(basePackages = {"com.duskio.features"}, repositoryBaseClass = CustomRepositoryImpl.class)
 @EnableJpaAuditing
 @EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 public class AppConfiguration {

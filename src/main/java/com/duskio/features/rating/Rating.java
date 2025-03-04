@@ -8,12 +8,12 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder @Getter @Setter @ToString
+@Getter @Setter @ToString
 public class Rating extends AuditableWithID {
 
     @Column(nullable = false)
     private Integer score;
 
-    @Column(nullable = false)
+    @Column(name = "work_id", nullable = false)
     private Long workId;
 }

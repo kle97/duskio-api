@@ -8,7 +8,7 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder @Getter @Setter @ToString
+@Getter @Setter @ToString
 public class Subject extends AuditableWithID {
 
     @Column(nullable = false)

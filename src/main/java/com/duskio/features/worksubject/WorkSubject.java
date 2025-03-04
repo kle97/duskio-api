@@ -1,20 +1,22 @@
 package com.duskio.features.worksubject;
 
 import com.duskio.common.entity.Auditable;
+import com.duskio.common.entity.Default;
 import com.duskio.features.subject.Subject;
+import com.duskio.features.work.Work;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @AllArgsConstructor @NoArgsConstructor
-@Builder @Getter @Setter @ToString(callSuper = true)
+@Getter @Setter
 public class WorkSubject extends Auditable {
     
     @EmbeddedId
     private WorkSubjectId id;
 
-    @ManyToOne(optional = false)
-    @MapsId("subjectId")
-    @JoinColumn(name = "subject_id")        
-    Subject subject;
+    @Default
+    public WorkSubject(Work work, Subject subject) {
+        this.id = new WorkSubjectId(work.getId(), subject.getId());
+    }
 }

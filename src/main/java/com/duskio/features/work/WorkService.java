@@ -21,8 +21,8 @@ public class WorkService {
     }
 
     @Transactional(readOnly = true)
-    public WorkResponse findDTOById(Long id) {
-        return workMapper.toWorkResponse(findById(id));
+    public WorkEntityResponse findDTOById(Long id) {
+        return workMapper.toWorkEntityResponse(findById(id));
     }
 
     @Transactional(readOnly = true)

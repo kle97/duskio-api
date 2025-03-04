@@ -13,6 +13,8 @@ public interface WorkMapper {
 
     WorkResponse toWorkResponse(Work work);
 
+    WorkEntityResponse toWorkEntityResponse(Work work);
+
     @Mapping(target = "ratings", ignore = true)
     @Mapping(target = "subjects", ignore = true)
     Work toWork(WorkRequest workRequest);
