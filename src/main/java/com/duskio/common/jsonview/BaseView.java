@@ -1,6 +1,6 @@
 package com.duskio.common.jsonview;
 
-public class View {
+public class BaseView {
 
     public interface Create extends Update {
     }

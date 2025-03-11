@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.domain.Persistable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class ID implements Serializable {
+public abstract class ID implements Serializable, Persistable<Long> {
 
     @Serial
     private static final long serialVersionUID = 42L;
@@ -57,5 +58,10 @@ public abstract class ID implements Serializable {
                     ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
                     : super.hashCode();
         }
+    }
+
+    @Override
+    public boolean isNew() {
+        return getId() == null;
     }
 }

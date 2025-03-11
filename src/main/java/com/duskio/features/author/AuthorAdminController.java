@@ -39,7 +39,7 @@ public class AuthorAdminController {
     @Operation(summary = "Save new author")
     public ResponseEntity<AuthorResponse> save(@RequestBody @Validated AuthorRequest authorRequest) {
         var response = authorService.save(authorRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 
