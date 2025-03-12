@@ -11,9 +11,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -33,7 +30,6 @@ public abstract class AuditableWithID extends ID {
 
     @CreatedDate
     @Column(nullable = false)
-    @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
     private LocalDateTime createdAt;
 
     @LastModifiedBy
@@ -42,7 +38,6 @@ public abstract class AuditableWithID extends ID {
 
     @LastModifiedDate
     @Column(nullable = false)
-    @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
     private LocalDateTime lastModifiedAt;
 
     @Version

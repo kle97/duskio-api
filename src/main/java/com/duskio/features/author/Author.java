@@ -5,16 +5,24 @@ import com.duskio.features.alternatename.AlternateName;
 import com.duskio.features.authorlink.AuthorLink;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.search.engine.backend.types.Aggregable;
+import org.hibernate.search.engine.backend.types.Projectable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Indexed
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter @ToString
 public class Author extends AuditableWithID {
 
+//    @FullTextField(analyzer = "stop")
+    @KeywordField(projectable = Projectable.YES, aggregable = Aggregable.YES)
     @Column(nullable = false)
     private String authorName;
 
