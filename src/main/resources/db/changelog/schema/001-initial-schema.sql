@@ -52,6 +52,7 @@ CREATE TABLE work
 (
     id               BIGINT       NOT NULL AUTO_INCREMENT,
     title            VARCHAR(512) NOT NULL,
+    description      VARCHAR(8192),
     ol_key           VARCHAR(255),
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,

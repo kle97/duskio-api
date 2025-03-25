@@ -16,13 +16,13 @@ import static com.duskio.common.constant.Constant.ADMIN_API_PATH;
 @RestController
 @RequiredArgsConstructor @Slf4j
 @RequestMapping(ADMIN_API_PATH + "indexer")
-@Tag(name = "indexer", description = "Mass Indexer Admin API")
+@Tag(name = "indexer-admin", description = "Mass Indexer Admin API")
 public class MassIndexerController {
 
     private final MassIndexerService massIndexerService;
     
     @GetMapping("/mass-index")
-    @Operation(summary = "reinitialize indexes", tags = "mass-indexer-admin")
+    @Operation(summary = "reinitialize indexes")
     public ResponseEntity<Void> massIndex() throws InterruptedException, IOException {
         massIndexerService.reinitializeIndexes();
         return ResponseEntity.ok().build();

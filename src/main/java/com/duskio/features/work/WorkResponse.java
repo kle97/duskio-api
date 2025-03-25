@@ -9,6 +9,7 @@ import java.util.Set;
 public record WorkResponse(
         Long id,
         String title,
+        String description,
         String olKey,
         Set<AuthorResponse> authors,
         Set<SubjectResponse> subjects,

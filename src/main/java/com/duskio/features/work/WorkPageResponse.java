@@ -6,7 +6,8 @@ import java.util.Set;
 
 public record WorkPageResponse(
         Long id, 
-        String title, 
+        String title,
+        String description,
         String olKey,
         Set<RatingResponse> ratings
 ) {

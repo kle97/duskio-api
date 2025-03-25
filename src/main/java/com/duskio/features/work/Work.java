@@ -21,6 +21,8 @@ public class Work extends AuditableWithID {
     @Column(nullable = false)
     private String title;
 
+    private String description;
+
     private String olKey;
 
     @OneToMany(cascade = CascadeType.ALL)

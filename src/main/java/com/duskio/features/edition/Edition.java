@@ -2,7 +2,10 @@ package com.duskio.features.edition;
 
 import com.duskio.common.entity.AuditableWithID;
 import com.duskio.features.publisher.Publisher;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
