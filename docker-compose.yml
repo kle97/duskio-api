@@ -1,0 +1,69 @@
+version: "3.8"
+
+networks:
+  default:
+    name: elastic
+    external: false
+
+volumes:
+  esdata01:
+    driver: local
+  kibanadata:
+    driver: local
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    ports:
+      - 8081:8081
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=123456
+      - KC_HOSTNAME=localhost
+      - KC_HTTP_PORT=8081
+#      - KC_DB=dev-file
+#      - KC_DB_DRIVER=org.h2.Driver
+#      - KC_DB_SCHEMA=KEYCLOAK
+#      - KC_DB_USERNAME=sa
+#      - KC_DB_PASSWORD=password
+#      - KC_DB_URL=jdbc:h2:file:/opt/keycloak/external-data/duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;NON_KEYWORDS=VALUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS keycloak\;
+#      - KC_DB_POOL_INITIAL_SIZE=10
+    volumes:
+      - ./:/opt/keycloak/external-data/
+      - ./kc.json:/opt/keycloak/data/import/kc.json
+    command:
+      - "start-dev"
+      - "--import-realm"
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.4
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=123456
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false      
+      - xpack.security.enrollment.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: docker.elastic.co/kibana/kibana:8.17.4
+    ports:
+      - 5601:5601
+    volumes:
+      - kibanadata:/usr/share/kibana/data
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=123456

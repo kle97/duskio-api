@@ -1,8 +1,12 @@
 package com.duskio.features.authorlink;
 
 import com.duskio.common.entity.AuditableWithID;
+import com.duskio.features.author.Author;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Entity
@@ -16,6 +20,8 @@ public class AuthorLink extends AuditableWithID {
     @Column(nullable = false)
     private String url;
 
-    @Column(nullable = false)
-    private Long authorId;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    @JsonBackReference
+    private Author author;
 }
