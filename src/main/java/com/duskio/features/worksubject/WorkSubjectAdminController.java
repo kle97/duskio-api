@@ -26,7 +26,7 @@ public class WorkSubjectAdminController {
     @GetMapping("/{workId}/{subjectId}")
     @Operation(summary = "Find work-subject by id")
     public ResponseEntity<WorkSubjectResponse> findById(@PathVariable Long workId, @PathVariable Long subjectId) {
-        return ResponseEntity.ok().body(workSubjectService.findDTOById(workId, subjectId));
+        return ResponseEntity.ok().body(workSubjectService.findEntityById(workId, subjectId));
     }
 
     @GetMapping("")
@@ -40,7 +40,7 @@ public class WorkSubjectAdminController {
     public ResponseEntity<WorkSubjectResponse> save(@RequestBody @Validated WorkSubjectRequest workSubjectRequest) {
         var response = workSubjectService.save(workSubjectRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id1}/{id2}")
-                                                  .buildAndExpand(response.workId(), response.subjectId())
+                                                  .buildAndExpand(response.getWorkId(), response.getSubjectId())
                                                   .toUri();
         return ResponseEntity.created(location).body(response);
     }

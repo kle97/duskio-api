@@ -23,7 +23,7 @@ public class WorkSubjectService {
     }
 
     @Transactional(readOnly = true)
-    public WorkSubjectResponse findDTOById(Long workId, Long subjectId) {
+    public WorkSubjectResponse findEntityById(Long workId, Long subjectId) {
         return workSubjectMapper.toWorkSubjectResponse(findById(workId, subjectId));
     }
 
@@ -40,7 +40,7 @@ public class WorkSubjectService {
             workSubject.setId(workSubjectId);
             return workSubjectMapper.toWorkSubjectResponse(workSubjectRepository.save(workSubject));
         } else {
-            return findDTOById(workSubjectRequest.workId(), workSubjectRequest.subjectId());
+            return findEntityById(workSubjectRequest.workId(), workSubjectRequest.subjectId());
         }
     }
 

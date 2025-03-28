@@ -1,5 +1,7 @@
 package com.duskio.features.subject;
 
+import com.duskio.common.jsonview.BaseView;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,14 @@ public class SubjectController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find subject by id")
+    @JsonView(BaseView.Public.class)
     public ResponseEntity<SubjectResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(subjectService.findDTOById(id));
+        return ResponseEntity.ok().body(subjectService.findEntityById(id));
     }
 
     @GetMapping("")
     @Operation(summary = "Find pages of subject")
+    @JsonView(BaseView.Public.class)
     public ResponseEntity<PagedModel<SubjectResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(new PagedModel<>(subjectService.findAll(pageable)));
     }

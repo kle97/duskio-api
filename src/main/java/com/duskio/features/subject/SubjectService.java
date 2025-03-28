@@ -21,7 +21,7 @@ public class SubjectService {
     }
 
     @Transactional(readOnly = true)
-    public SubjectResponse findDTOById(Long id) {
+    public SubjectResponse findEntityById(Long id) {
         return subjectMapper.toSubjectResponse(findById(id));
     }
 

@@ -13,14 +13,15 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 @Indexed
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Rating extends AuditableWithID {
     
     @GenericField(projectable = Projectable.YES)
     @Column(nullable = false)
+    @ToString.Include
     private Integer score;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_id", nullable = false)
     @JsonBackReference
     private Work work;

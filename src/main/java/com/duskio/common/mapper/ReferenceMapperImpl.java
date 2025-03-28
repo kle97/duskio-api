@@ -28,7 +28,7 @@ public class ReferenceMapperImpl implements ReferenceMapper {
         }
 
         Map<String, Object> properties = new HashMap<>();
-//        properties.put(HINT_CACHEABLE, true);
+        properties.put(HINT_CACHEABLE, true);
         T entity = entityManager.find(entityClass, id, properties);
 
         if (entity != null) {

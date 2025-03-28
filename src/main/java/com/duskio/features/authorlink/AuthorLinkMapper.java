@@ -12,6 +12,8 @@ public interface AuthorLinkMapper {
 
     AuthorLinkResponse toAuthorLinkResponse(AuthorLink authorLink);
 
+    AuthorLinkEntityResponse toAuthorLinkEntityResponse(AuthorLink authorLink);
+
     AuthorLink toAuthorLink(AuthorLinkRequest authorLinkRequest);
 
     AuthorLink toExistingAuthorLink(AuthorLinkRequest authorLinkRequest, @MappingTarget AuthorLink authorLink);

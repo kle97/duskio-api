@@ -4,10 +4,7 @@ import com.duskio.common.entity.AuditableWithID;
 import com.duskio.features.publisher.Publisher;
 import com.duskio.features.work.Work;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.search.engine.backend.types.Aggregable;
 import org.hibernate.search.engine.backend.types.Projectable;
@@ -20,11 +17,12 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 @Indexed
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Edition extends AuditableWithID {
 
     @FullTextField(projectable = Projectable.YES)
     @Column(nullable = false)
+    @ToString.Include
     private String title;
 
     @FullTextField(projectable = Projectable.YES)
@@ -79,13 +77,14 @@ public class Edition extends AuditableWithID {
     private Integer grade;
 
     @IndexedEmbedded
-    @ManyToOne
-    @JoinColumn(name = "work_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_id")
     @JsonBackReference
     private Work work;
     
+    @IndexedEmbedded
     @ManyToOne
-    @JoinColumn(name = "publisher_id", nullable = false)
+    @JoinColumn(name = "publisher_id")
     @JsonBackReference
     private Publisher publisher;
 }

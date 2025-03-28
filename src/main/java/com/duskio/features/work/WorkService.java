@@ -1,6 +1,10 @@
 package com.duskio.features.work;
 
 import com.duskio.common.exception.ResourceNotFoundException;
+import com.duskio.features.work.dto.WorkEntityResponse;
+import com.duskio.features.work.dto.WorkPageResponse;
+import com.duskio.features.work.dto.WorkRequest;
+import com.duskio.features.work.dto.WorkResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,8 +25,9 @@ public class WorkService {
     }
 
     @Transactional(readOnly = true)
-    public WorkResponse findDTOById(Long id) {
-        return workMapper.toWorkResponse(findById(id));
+    public WorkEntityResponse findEntityById(Long id) {
+        return workMapper.toWorkEntityResponse(workRepository.findEntityById(id)
+                                                             .orElseThrow(() -> new ResourceNotFoundException(Work.class, id)));
     }
 
     @Transactional(readOnly = true)
@@ -31,15 +36,15 @@ public class WorkService {
     }
 
     @Transactional
-    public WorkSimpleResponse save(WorkRequest workRequest) {
+    public WorkResponse save(WorkRequest workRequest) {
         Work transientWork = workMapper.toWork(workRequest);
-        return workMapper.toWorkSimpleResponse(workRepository.save(transientWork));
+        return workMapper.toWorkResponse(workRepository.save(transientWork));
     }
 
     @Transactional
-    public WorkSimpleResponse update(Long id, WorkRequest workRequest) {
+    public WorkResponse update(Long id, WorkRequest workRequest) {
         Work currentWork = findById(id);
-        return workMapper.toWorkSimpleResponse(workMapper.toExistingWork(workRequest, currentWork));
+        return workMapper.toWorkResponse(workMapper.toExistingWork(workRequest, currentWork));
     }
 
     @Transactional

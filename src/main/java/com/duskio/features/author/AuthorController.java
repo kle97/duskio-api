@@ -27,8 +27,8 @@ public class AuthorController {
     @GetMapping("/{id}")
     @Operation(summary = "Find author by id")
     @JsonView(BaseView.Public.class)
-    public ResponseEntity<AuthorResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(authorService.findDTOById(id));
+    public ResponseEntity<AuthorEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(authorService.findEntityById(id));
     }
 
     @GetMapping("")

@@ -1,4 +1,12 @@
 package com.duskio.features.alternatename;
 
-public record AlternateNameResponse(Long id, String alternateName, Long authorId) {
+import com.duskio.common.entity.BaseResponseWithID;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
+
+@Getter
+@SuperBuilder(toBuilder = true)
+public class AlternateNameResponse extends BaseResponseWithID {
+
+    private String alternateName;
 }

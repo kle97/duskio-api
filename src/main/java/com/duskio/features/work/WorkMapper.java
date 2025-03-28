@@ -1,6 +1,7 @@
 package com.duskio.features.work;
 
 import com.duskio.common.mapper.ReferenceMapper;
+import com.duskio.features.work.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -12,7 +13,9 @@ public interface WorkMapper {
     WorkMapper INSTANCE = Mappers.getMapper(WorkMapper.class);
     
     WorkResponse toWorkResponse(Work work);
-    
+
+    WorkEntityResponse toWorkEntityResponse(Work work);
+
     WorkPageResponse toWorkPageResponse(Work work);
 
     WorkSimpleResponse toWorkSimpleResponse(Work work);

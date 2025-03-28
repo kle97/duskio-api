@@ -1,5 +1,9 @@
 package com.duskio.features.work;
 
+import com.duskio.features.work.dto.WorkEntityResponse;
+import com.duskio.features.work.dto.WorkPageResponse;
+import com.duskio.features.work.dto.WorkRequest;
+import com.duskio.features.work.dto.WorkResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +29,8 @@ public class WorkAdminController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find work by id")
-    public ResponseEntity<WorkResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(workService.findDTOById(id));
+    public ResponseEntity<WorkEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(workService.findEntityById(id));
     }
 
     @GetMapping("")
@@ -37,15 +41,15 @@ public class WorkAdminController {
 
     @PostMapping("")
     @Operation(summary = "Save new work")
-    public ResponseEntity<WorkSimpleResponse> save(@RequestBody @Validated WorkRequest workRequest) {
+    public ResponseEntity<WorkResponse> save(@RequestBody @Validated WorkRequest workRequest) {
         var response = workService.save(workRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update work")
-    public ResponseEntity<WorkSimpleResponse> update(@PathVariable Long id, @RequestBody @Validated WorkRequest workRequest) {
+    public ResponseEntity<WorkResponse> update(@PathVariable Long id, @RequestBody @Validated WorkRequest workRequest) {
         return ResponseEntity.ok(workService.update(id, workRequest));
     }
 

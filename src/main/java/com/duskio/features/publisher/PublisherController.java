@@ -1,5 +1,7 @@
 package com.duskio.features.publisher;
 
+import com.duskio.common.jsonview.BaseView;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,14 @@ public class PublisherController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find publisher by id")
+    @JsonView(BaseView.Public.class)
     public ResponseEntity<PublisherResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(publisherService.findDTOById(id));
+        return ResponseEntity.ok().body(publisherService.findEntityById(id));
     }
 
     @GetMapping("")
     @Operation(summary = "Find pages of publisher")
+    @JsonView(BaseView.Public.class)
     public ResponseEntity<PagedModel<PublisherResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(new PagedModel<>(publisherService.findAll(pageable)));
     }

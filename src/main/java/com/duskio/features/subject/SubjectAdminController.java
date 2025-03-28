@@ -26,7 +26,7 @@ public class SubjectAdminController {
     @GetMapping("/{id}")
     @Operation(summary = "Find subject by id")
     public ResponseEntity<SubjectResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(subjectService.findDTOById(id));
+        return ResponseEntity.ok().body(subjectService.findEntityById(id));
     }
 
     @GetMapping("")
@@ -39,7 +39,7 @@ public class SubjectAdminController {
     @Operation(summary = "Save new subject")
     public ResponseEntity<SubjectResponse> save(@RequestBody @Validated SubjectRequest subjectRequest) {
         var response = subjectService.save(subjectRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 

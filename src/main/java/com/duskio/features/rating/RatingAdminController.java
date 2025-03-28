@@ -25,8 +25,8 @@ public class RatingAdminController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find rating by id")
-    public ResponseEntity<RatingResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(ratingService.findDTOById(id));
+    public ResponseEntity<RatingEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(ratingService.findEntityById(id));
     }
 
     @GetMapping("")
@@ -39,7 +39,7 @@ public class RatingAdminController {
     @Operation(summary = "Save new rating")
     public ResponseEntity<RatingResponse> save(@RequestBody @Validated RatingRequest ratingRequest) {
         var response = ratingService.save(ratingRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 

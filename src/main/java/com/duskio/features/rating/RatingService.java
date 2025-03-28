@@ -21,8 +21,9 @@ public class RatingService {
     }
 
     @Transactional(readOnly = true)
-    public RatingResponse findDTOById(Long id) {
-        return ratingMapper.toRatingResponse(findById(id));
+    public RatingEntityResponse findEntityById(Long id) {
+        return ratingMapper.toRatingEntityResponse(ratingRepository.findEntityById(id)
+                                                                   .orElseThrow(() -> new ResourceNotFoundException(Rating.class, id)));
     }
 
     @Transactional(readOnly = true)

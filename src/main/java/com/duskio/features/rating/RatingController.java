@@ -1,5 +1,7 @@
 package com.duskio.features.rating;
 
+import com.duskio.common.jsonview.BaseView;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,14 @@ public class RatingController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find rating by id")
-    public ResponseEntity<RatingResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(ratingService.findDTOById(id));
+    @JsonView(BaseView.Public.class)
+    public ResponseEntity<RatingEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(ratingService.findEntityById(id));
     }
 
     @GetMapping("")
     @Operation(summary = "Find pages of rating")
+    @JsonView(BaseView.Public.class)
     public ResponseEntity<PagedModel<RatingResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(new PagedModel<>(ratingService.findAll(pageable)));
     }

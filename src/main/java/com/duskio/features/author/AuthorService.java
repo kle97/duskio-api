@@ -21,8 +21,9 @@ public class AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public AuthorResponse findDTOById(Long id) {
-        return authorMapper.toAuthorResponse(findById(id));
+    public AuthorEntityResponse findEntityById(Long id) {
+        return authorMapper.toAuthorEntityResponse(authorRepository.findEntityById(id)
+                                                                   .orElseThrow(() -> new ResourceNotFoundException(Author.class, id)));
     }
 
     @Transactional(readOnly = true)

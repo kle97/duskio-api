@@ -11,7 +11,9 @@ public interface RatingMapper {
     RatingMapper INSTANCE = Mappers.getMapper(RatingMapper.class);
 
     RatingResponse toRatingResponse(Rating rating);
-    
+
+    RatingEntityResponse toRatingEntityResponse(Rating rating);
+
     Rating toRating(RatingRequest ratingRequest);
     
     Rating toExistingRating(RatingRequest ratingRequest, @MappingTarget Rating rating);

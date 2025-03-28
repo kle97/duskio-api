@@ -12,6 +12,8 @@ public interface AlternateNameMapper {
 
     AlternateNameResponse toAlternateNameResponse(AlternateName alternateName);
 
+    AlternateNameEntityResponse toAlternateNameEntityResponse(AlternateName alternateName);
+
     AlternateName toAlternateName(AlternateNameRequest alternateNameRequest);
 
     AlternateName toExistingAlternateName(AlternateNameRequest alternateNameRequest, @MappingTarget AlternateName alternateName);

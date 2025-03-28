@@ -1,5 +1,9 @@
 package com.duskio.features.work;
 
+import com.duskio.common.jsonview.BaseView;
+import com.duskio.features.work.dto.WorkEntityResponse;
+import com.duskio.features.work.dto.WorkPageResponse;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +28,14 @@ public class WorkController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Find work by id")
-    public ResponseEntity<WorkResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(workService.findDTOById(id));
+    @JsonView(BaseView.Public.class)
+    public ResponseEntity<WorkEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(workService.findEntityById(id));
     }
 
     @GetMapping("")
     @Operation(summary = "Find pages of work")
+    @JsonView(BaseView.Public.class)
     public ResponseEntity<PagedModel<WorkPageResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(new PagedModel<>(workService.findAll(pageable)));
     }

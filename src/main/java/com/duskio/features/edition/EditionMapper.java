@@ -1,8 +1,9 @@
 package com.duskio.features.edition;
 
 import com.duskio.common.mapper.ReferenceMapper;
+import com.duskio.features.edition.dto.EditionRequest;
+import com.duskio.features.edition.dto.EditionResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 

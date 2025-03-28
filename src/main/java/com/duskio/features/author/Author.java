@@ -19,12 +19,13 @@ import java.util.Set;
 @Indexed
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Author extends AuditableWithID {
 
     @FullTextField(name = "_authorName")
     @GenericField(projectable = Projectable.YES, aggregable = Aggregable.YES)
     @Column(nullable = false)
+    @ToString.Include
     private String authorName;
 
     private String birthDate;

@@ -1,22 +1,18 @@
 package com.duskio.features.author;
 
 import jakarta.annotation.Nonnull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    @Override
     @Nonnull
-    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = {
-            "alternateNames.alternateName",
-            "links.title",
-            "links.url"
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths = {
+            "alternateNames", "links"
     })
-    Page<Author> findAll(@Nonnull Pageable pageable);
+    Optional<Author> findEntityById(@Nonnull Long id);
 }

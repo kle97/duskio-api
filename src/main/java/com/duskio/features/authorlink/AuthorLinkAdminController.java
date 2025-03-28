@@ -3,6 +3,9 @@ package com.duskio.features.authorlink;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +23,23 @@ public class AuthorLinkAdminController {
     
     private final AuthorLinkService authorLinkService;
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Find author link by id")
+    public ResponseEntity<AuthorLinkEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(authorLinkService.findEntityById(id));
+    }
+
+    @GetMapping("")
+    @Operation(summary = "Find pages of author link")
+    public ResponseEntity<PagedModel<AuthorLinkResponse>> findPage(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok().body(new PagedModel<>(authorLinkService.findAll(pageable)));
+    }
+
     @PostMapping("")
     @Operation(summary = "Save new author link")
     public ResponseEntity<AuthorLinkResponse> save(@RequestBody @Validated AuthorLinkRequest authorLinkRequest) {
         var response = authorLinkService.save(authorLinkRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 

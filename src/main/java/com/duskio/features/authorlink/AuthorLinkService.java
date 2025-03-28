@@ -3,6 +3,8 @@ package com.duskio.features.authorlink;
 import com.duskio.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,18 @@ public class AuthorLinkService {
     @Transactional(readOnly = true)
     public AuthorLink findById(Long id) {
         return authorLinkRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(AuthorLink.class, id));
+    }
+
+    @Transactional(readOnly = true)
+    public AuthorLinkEntityResponse findEntityById(Long id) {
+        AuthorLink entity = authorLinkRepository.findEntityById(id)
+                                                .orElseThrow(() -> new ResourceNotFoundException(AuthorLink.class, id));
+        return authorLinkMapper.toAuthorLinkEntityResponse(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AuthorLinkResponse> findAll(Pageable pageable) {
+        return authorLinkRepository.findAll(pageable).map(authorLinkMapper::toAuthorLinkResponse);
     }
 
     @Transactional

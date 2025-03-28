@@ -24,7 +24,7 @@ public class AuthorWorkService {
     }
 
     @Transactional(readOnly = true)
-    public AuthorWorkResponse findDTOById(Long workId, Long authorId) {
+    public AuthorWorkResponse findEntityById(Long workId, Long authorId) {
         return authorWorkMapper.toWorkAuthorResponse(findById(workId, authorId));
     }
 

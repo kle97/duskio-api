@@ -1,5 +1,7 @@
 package com.duskio.features.edition;
 
+import com.duskio.features.edition.dto.EditionRequest;
+import com.duskio.features.edition.dto.EditionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ public class EditionAdminController {
     @GetMapping("/{id}")
     @Operation(summary = "Find edition by id")
     public ResponseEntity<EditionResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(editionService.findDTOById(id));
+        return ResponseEntity.ok().body(editionService.findEntityById(id));
     }
 
     @GetMapping("")
@@ -42,7 +44,7 @@ public class EditionAdminController {
         var response = editionService.save(editionRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()
                                                   .path("/{id}")
-                                                  .buildAndExpand(response.id())
+                                                  .buildAndExpand(response.getId())
                                                   .toUri();
         return ResponseEntity.created(location).body(response);
     }

@@ -26,7 +26,7 @@ public class AuthorWorkAdminController {
     @GetMapping("/{workId}/{authorId}")
     @Operation(summary = "Find author-work by id")
     public ResponseEntity<AuthorWorkResponse> findById(@PathVariable Long workId, @PathVariable Long authorId) {
-        return ResponseEntity.ok().body(authorWorkService.findDTOById(workId, authorId));
+        return ResponseEntity.ok().body(authorWorkService.findEntityById(workId, authorId));
     }
 
     @GetMapping("")
@@ -40,7 +40,7 @@ public class AuthorWorkAdminController {
     public ResponseEntity<AuthorWorkResponse> save(@RequestBody @Validated AuthorWorkRequest workAuthorRequest) {
         var response = authorWorkService.save(workAuthorRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id1}/{id2}")
-                                                  .buildAndExpand(response.workId(), response.authorId())
+                                                  .buildAndExpand(response.getAuthorId(), response.getWorkId())
                                                   .toUri();
         return ResponseEntity.created(location).body(response);
     }

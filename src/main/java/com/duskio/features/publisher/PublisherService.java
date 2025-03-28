@@ -21,7 +21,7 @@ public class PublisherService {
     }
 
     @Transactional(readOnly = true)
-    public PublisherResponse findDTOById(Long id) {
+    public PublisherResponse findEntityById(Long id) {
         return publisherMapper.toPublisherResponse(findById(id));
     }
 

@@ -13,6 +13,8 @@ public interface AuthorMapper {
 
     AuthorResponse toAuthorResponse(Author author);
 
+    AuthorEntityResponse toAuthorEntityResponse(Author author);
+
     @Mapping(target = "alternateNames", ignore = true)
     @Mapping(target = "links", ignore = true)
     Author toAuthor(AuthorRequest authorRequest);

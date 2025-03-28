@@ -3,6 +3,8 @@ package com.duskio.features.alternatename;
 import com.duskio.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,18 @@ public class AlternateNameService {
     @Transactional(readOnly = true)
     public AlternateName findById(Long id) {
         return alternateNameRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(AlternateName.class, id));
+    }
+
+    @Transactional(readOnly = true)
+    public AlternateNameEntityResponse findEntityById(Long id) {
+        AlternateName entity = alternateNameRepository.findEntityById(id)
+                                                      .orElseThrow(() -> new ResourceNotFoundException(AlternateName.class, id));
+        return alternateNameMapper.toAlternateNameEntityResponse(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AlternateNameResponse> findAll(Pageable pageable) {
+        return alternateNameRepository.findAll(pageable).map(alternateNameMapper::toAlternateNameResponse);
     }
 
     @Transactional

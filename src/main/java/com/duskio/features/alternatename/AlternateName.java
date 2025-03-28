@@ -16,7 +16,7 @@ public class AlternateName extends AuditableWithID {
     @Column(nullable = false)
     private String alternateName;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     @JsonBackReference
     private Author author;

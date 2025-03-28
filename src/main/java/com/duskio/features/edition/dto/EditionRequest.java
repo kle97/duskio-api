@@ -1,4 +1,4 @@
-package com.duskio.features.edition;
+package com.duskio.features.edition.dto;
 
 public record EditionRequest(
         String title,

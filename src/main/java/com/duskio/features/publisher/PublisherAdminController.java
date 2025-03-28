@@ -26,7 +26,7 @@ public class PublisherAdminController {
     @GetMapping("/{id}")
     @Operation(summary = "Find publisher by id")
     public ResponseEntity<PublisherResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(publisherService.findDTOById(id));
+        return ResponseEntity.ok().body(publisherService.findEntityById(id));
     }
 
     @GetMapping("")
@@ -39,7 +39,7 @@ public class PublisherAdminController {
     @Operation(summary = "Save new publisher")
     public ResponseEntity<PublisherResponse> save(@RequestBody @Validated PublisherResponse publisherRequest) {
         var response = publisherService.save(publisherRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.id()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(location).body(response);
     }
 

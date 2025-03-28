@@ -6,10 +6,7 @@ import com.duskio.features.edition.Edition;
 import com.duskio.features.rating.Rating;
 import com.duskio.features.subject.Subject;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
@@ -20,8 +17,10 @@ import java.util.Set;
 @Indexed
 @AllArgsConstructor
 @NoArgsConstructor @Getter @Setter
+@ToString(onlyExplicitlyIncluded = true)
 public class Work extends AuditableWithID {
-    
+
+    @ToString.Include
     @Column(nullable = false)
     private String title;
 
@@ -33,14 +32,20 @@ public class Work extends AuditableWithID {
     private Set<Edition> editions = new HashSet<>();
 
     @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
-    @IndexedEmbedded
+    @IndexedEmbedded(includeDepth = 1)
     private Set<Rating> ratings = new HashSet<>();
 
     @ManyToMany
-    @IndexedEmbedded
+    @JoinTable(name = "work_subject",
+               joinColumns = @JoinColumn(name = "work_id"),
+               inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    @IndexedEmbedded(includeDepth = 1)
     private Set<Subject> subjects = new HashSet<>();
 
     @ManyToMany
-    @IndexedEmbedded
+    @JoinTable(name = "author_work",
+               joinColumns = @JoinColumn(name = "work_id"),
+               inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @IndexedEmbedded(includeDepth = 1)
     private Set<Author> authors = new HashSet<>();
 }

@@ -2,6 +2,8 @@ package com.duskio.features.edition;
 
 import com.duskio.common.exception.ResourceNotFoundException;
 import com.duskio.common.service.EnglishDictionary;
+import com.duskio.features.edition.dto.EditionRequest;
+import com.duskio.features.edition.dto.EditionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,8 +26,10 @@ public class EditionService {
     }
 
     @Transactional(readOnly = true)
-    public EditionResponse findDTOById(Long id) {
-        return editionMapper.toEditionResponse(findById(id));
+    public EditionResponse findEntityById(Long id) {
+        Edition entity = editionRepository.findEntityById(id)
+                                          .orElseThrow(() -> new ResourceNotFoundException(Edition.class, id));
+        return editionMapper.toEditionResponse(entity);
     }
 
     @Transactional(readOnly = true)
