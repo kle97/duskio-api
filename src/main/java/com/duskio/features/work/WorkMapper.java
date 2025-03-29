@@ -1,7 +1,10 @@
 package com.duskio.features.work;
 
 import com.duskio.common.mapper.ReferenceMapper;
-import com.duskio.features.work.dto.*;
+import com.duskio.features.work.dto.WorkEntityResponse;
+import com.duskio.features.work.dto.WorkRequest;
+import com.duskio.features.work.dto.WorkResponse;
+import com.duskio.features.work.dto.WorkSimpleResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -16,15 +19,11 @@ public interface WorkMapper {
 
     WorkEntityResponse toWorkEntityResponse(Work work);
 
-    WorkPageResponse toWorkPageResponse(Work work);
-
     WorkSimpleResponse toWorkSimpleResponse(Work work);
     
-    @Mapping(target = "ratings", ignore = true)
     @Mapping(target = "subjects", ignore = true)
     Work toWork(WorkRequest workRequest);
 
-    @Mapping(target = "ratings", ignore = true)
     @Mapping(target = "subjects", ignore = true)
     Work toExistingWork(WorkRequest workRequest, @MappingTarget Work work);
 }

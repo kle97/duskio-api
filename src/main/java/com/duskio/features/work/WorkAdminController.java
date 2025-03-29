@@ -1,7 +1,6 @@
 package com.duskio.features.work;
 
 import com.duskio.features.work.dto.WorkEntityResponse;
-import com.duskio.features.work.dto.WorkPageResponse;
 import com.duskio.features.work.dto.WorkRequest;
 import com.duskio.features.work.dto.WorkResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +34,7 @@ public class WorkAdminController {
 
     @GetMapping("")
     @Operation(summary = "Find pages of work")
-    public ResponseEntity<PagedModel<WorkPageResponse>> findPage(@ParameterObject Pageable pageable) {
+    public ResponseEntity<PagedModel<WorkResponse>> findPage(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok().body(new PagedModel<>(workService.findAll(pageable)));
     }
 

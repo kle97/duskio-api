@@ -1,8 +1,8 @@
-package com.duskio.features.rating;
+package com.duskio.features.review;
 
 import com.duskio.common.entity.AuditableWithID;
-import com.duskio.features.work.Work;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.duskio.features.edition.Edition;
+import com.duskio.features.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.search.engine.backend.types.Projectable;
@@ -14,15 +14,26 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter @ToString(onlyExplicitlyIncluded = true)
-public class Rating extends AuditableWithID {
+public class Review extends AuditableWithID {
+
+    @EmbeddedId
+    private ReviewId id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("profileId")
+    @JoinColumn(name = "profile_id")
+    Profile profile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("editionId")
+    @JoinColumn(name = "edition_id")
+    Edition edition;
     
     @GenericField(projectable = Projectable.YES)
     @Column(nullable = false)
     @ToString.Include
     private Integer score;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "work_id", nullable = false)
-    @JsonBackReference
-    private Work work;
+
+    @ToString.Include
+    private String review;
 }

@@ -3,7 +3,6 @@ package com.duskio.features.work;
 import com.duskio.common.entity.AuditableWithID;
 import com.duskio.features.author.Author;
 import com.duskio.features.edition.Edition;
-import com.duskio.features.rating.Rating;
 import com.duskio.features.subject.Subject;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,10 +29,6 @@ public class Work extends AuditableWithID {
 
     @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Edition> editions = new HashSet<>();
-
-    @OneToMany(mappedBy = "work", cascade = CascadeType.ALL, orphanRemoval = true)
-    @IndexedEmbedded(includeDepth = 1)
-    private Set<Rating> ratings = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "work_subject",

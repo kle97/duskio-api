@@ -1,8 +1,6 @@
-package com.duskio.features.work;
+package com.duskio.features.review;
 
 import com.duskio.common.jsonview.BaseView;
-import com.duskio.features.work.dto.WorkEntityResponse;
-import com.duskio.features.work.dto.WorkResponse;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,23 +18,23 @@ import static com.duskio.common.constant.Constant.PUBLIC_API_PATH;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(PUBLIC_API_PATH + "works")
-@Tag(name = "work", description = "Work API")
-public class WorkController {
+@RequestMapping(PUBLIC_API_PATH + "reviews")
+@Tag(name = "review", description = "Review API")
+public class ReviewController {
     
-    private final WorkService workService;
+    private final ReviewService reviewService;
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Find work by id")
+    @GetMapping("/{profileId}/{editionId}")
+    @Operation(summary = "Find review by id")
     @JsonView(BaseView.Public.class)
-    public ResponseEntity<WorkEntityResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(workService.findEntityById(id));
+    public ResponseEntity<ReviewEntityResponse> findById(@PathVariable Long profileId, @PathVariable Long editionId) {
+        return ResponseEntity.ok().body(reviewService.findEntityById(profileId, editionId));
     }
 
     @GetMapping("")
-    @Operation(summary = "Find pages of work")
+    @Operation(summary = "Find pages of review")
     @JsonView(BaseView.Public.class)
-    public ResponseEntity<PagedModel<WorkResponse>> findPage(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok().body(new PagedModel<>(workService.findAll(pageable)));
+    public ResponseEntity<PagedModel<ReviewResponse>> findPage(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok().body(new PagedModel<>(reviewService.findAll(pageable)));
     }
 }

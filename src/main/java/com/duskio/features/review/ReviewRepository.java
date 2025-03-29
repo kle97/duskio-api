@@ -1,4 +1,4 @@
-package com.duskio.features.rating;
+package com.duskio.features.review;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RatingRepository extends JpaRepository<Rating, Long> {
+public interface ReviewRepository extends JpaRepository<Review, ReviewId> {
 
     @Nonnull
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths = {
             "work"
     })
-    Optional<Rating> findEntityById(@Nonnull Long id);
+    Optional<Review> findEntityById(@Nonnull ReviewId reviewId);
 }

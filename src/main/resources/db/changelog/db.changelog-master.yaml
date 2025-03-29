@@ -74,9 +74,9 @@ databaseChangeLog:
             file: data/filtered-author-work.csv
             quotchar: '"'
         - loadData:
-            tableName: RATING
+            tableName: REVIEW
             relativeToChangelogFile: true
-            file: data/filtered-rating.csv
+            file: data/filtered-review.csv
             quotchar: '"'
         - loadData:
             tableName: WORK_SUBJECT

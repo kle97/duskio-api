@@ -13,14 +13,12 @@ import java.util.Optional;
 public interface WorkRepository extends JpaRepository<Work, Long> {
 
     @Override @Nonnull
-    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths={
-            "ratings",
-    })
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths={})
     Page<Work> findAll(@Nonnull Pageable pageable);
 
     @Nonnull
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths = {
-            "authors", "subjects", "ratings"
+            "authors", "subjects"
     })
     Optional<Work> findEntityById(@Nonnull Long id);
 }

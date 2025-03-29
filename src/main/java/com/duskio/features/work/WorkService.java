@@ -2,7 +2,6 @@ package com.duskio.features.work;
 
 import com.duskio.common.exception.ResourceNotFoundException;
 import com.duskio.features.work.dto.WorkEntityResponse;
-import com.duskio.features.work.dto.WorkPageResponse;
 import com.duskio.features.work.dto.WorkRequest;
 import com.duskio.features.work.dto.WorkResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +30,8 @@ public class WorkService {
     }
 
     @Transactional(readOnly = true)
-    public Page<WorkPageResponse> findAll(Pageable pageable) {
-        return workRepository.findAll(pageable).map(workMapper::toWorkPageResponse);
+    public Page<WorkResponse> findAll(Pageable pageable) {
+        return workRepository.findAll(pageable).map(workMapper::toWorkResponse);
     }
 
     @Transactional

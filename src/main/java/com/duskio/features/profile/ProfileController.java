@@ -1,4 +1,4 @@
-package com.duskio.features.rating;
+package com.duskio.features.profile;
 
 import com.duskio.common.jsonview.BaseView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -18,23 +18,23 @@ import static com.duskio.common.constant.Constant.PUBLIC_API_PATH;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(PUBLIC_API_PATH + "ratings")
-@Tag(name = "rating", description = "Rating API")
-public class RatingController {
-    
-    private final RatingService ratingService;
+@RequestMapping(PUBLIC_API_PATH + "profiles")
+@Tag(name = "profile", description = "Profile API")
+public class ProfileController {
+
+    private final ProfileService profileService;
 
     @GetMapping("/{id}")
-    @Operation(summary = "Find rating by id")
+    @Operation(summary = "Find profile by id")
     @JsonView(BaseView.Public.class)
-    public ResponseEntity<RatingEntityResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(ratingService.findEntityById(id));
+    public ResponseEntity<ProfileEntityResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(profileService.findEntityById(id));
     }
 
     @GetMapping("")
-    @Operation(summary = "Find pages of rating")
+    @Operation(summary = "Find pages of profile")
     @JsonView(BaseView.Public.class)
-    public ResponseEntity<PagedModel<RatingResponse>> findPage(@ParameterObject Pageable pageable) {
-        return ResponseEntity.ok().body(new PagedModel<>(ratingService.findAll(pageable)));
+    public ResponseEntity<PagedModel<ProfileResponse>> findPage(@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok().body(new PagedModel<>(profileService.findAll(pageable)));
     }
 }

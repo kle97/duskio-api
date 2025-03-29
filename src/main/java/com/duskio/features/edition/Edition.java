@@ -2,16 +2,21 @@ package com.duskio.features.edition;
 
 import com.duskio.common.entity.AuditableWithID;
 import com.duskio.features.publisher.Publisher;
+import com.duskio.features.review.Review;
 import com.duskio.features.work.Work;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.search.engine.backend.types.Aggregable;
 import org.hibernate.search.engine.backend.types.Projectable;
+import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Indexed
@@ -75,6 +80,15 @@ public class Edition extends AuditableWithID {
 
     @Column(nullable = false)
     private Integer grade;
+
+    @GenericField(projectable = Projectable.YES, sortable = Sortable.YES)
+    private Double averageRating;
+
+    @GenericField(projectable = Projectable.YES, sortable = Sortable.YES)
+    private Integer ratingCount;
+
+    @OneToMany(mappedBy = "edition", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews = new HashSet<>();
 
     @IndexedEmbedded
     @ManyToOne(fetch = FetchType.LAZY)

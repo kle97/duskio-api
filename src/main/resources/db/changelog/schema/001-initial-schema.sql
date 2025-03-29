@@ -106,18 +106,20 @@ CREATE TABLE work_subject
 );
 
 
-CREATE TABLE rating
+CREATE TABLE review
 (
-    id               BIGINT       NOT NULL AUTO_INCREMENT,
+    profile_id       BIGINT       NOT NULL,
+    edition_id       BIGINT       NOT NULL,
     score            INT          NOT NULL,
-    work_id          BIGINT       NOT NULL,
+    review           VARCHAR(4000),
     created_by       VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by VARCHAR(255) NOT NULL,
     last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     revision         INT          NOT NULL DEFAULT 0,
-    PRIMARY KEY (id),
-    FOREIGN KEY (work_id) REFERENCES work (id) ON DELETE CASCADE
+    PRIMARY KEY (profile_id, edition_id),
+    FOREIGN KEY (profile_id) REFERENCES profile (id) ON DELETE CASCADE,
+    FOREIGN KEY (edition_id) REFERENCES edition (id) ON DELETE CASCADE
 );
 
 
@@ -160,6 +162,8 @@ CREATE TABLE edition
     ol_key              VARCHAR(255),
     grade               INT          NOT NULL,
     publisher_id        BIGINT,
+    average_rating      DOUBLE,
+    rating_count        INT,
     work_id             BIGINT,
     created_by          VARCHAR(255) NOT NULL,
     created_at          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -169,4 +173,27 @@ CREATE TABLE edition
     PRIMARY KEY (id),
     FOREIGN KEY (work_id) REFERENCES work (id) ON DELETE SET NULL,
     FOREIGN KEY (publisher_id) REFERENCES publisher (id) ON DELETE SET NULL
+);
+
+
+CREATE TABLE profile
+(
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
+    user_id            VARCHAR(255) NOT NULL,
+    username           VARCHAR(255) NOT NULL,
+    display_name       VARCHAR(255) NOT NULL,
+    biography          VARCHAR(4000),
+    location           VARCHAR(255),
+    date_of_birth      DATE,
+    website            VARCHAR(255),
+    profile_picture    VARCHAR(255),
+    background_picture VARCHAR(255),
+    created_by         VARCHAR(255) NOT NULL,
+    created_at         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by   VARCHAR(255) NOT NULL,
+    last_modified_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision           INT          NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE (user_id),
+    UNIQUE (username)
 );

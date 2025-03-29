@@ -48,5 +48,9 @@ public class EditionResponse extends EditionSimpleResponse {
 
     private Integer grade;
 
+    private Double averageRating;
+
+    private Integer ratingCount;
+
     private PublisherResponse publisher;
 }
