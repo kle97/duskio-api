@@ -74,11 +74,6 @@ databaseChangeLog:
             file: data/filtered-author-work.csv
             quotchar: '"'
         - loadData:
-            tableName: REVIEW
-            relativeToChangelogFile: true
-            file: data/filtered-review.csv
-            quotchar: '"'
-        - loadData:
             tableName: WORK_SUBJECT
             relativeToChangelogFile: true
             file: data/filtered-work-subject.csv
@@ -92,3 +87,22 @@ databaseChangeLog:
             relativeToChangelogFile: true
             file: data/filtered-edition.csv
             quotchar: '"'
+  - changeSet:
+      id: loadProfileData
+      author: admin
+      changes:
+        - loadData:
+            tableName: PROFILE
+            relativeToChangelogFile: true
+            file: data/filtered-profile.csv
+            quotchar: '"'
+  - changeSet:
+      id: loadEditionRelatedData
+      author: admin
+      changes:
+        - loadData:
+            tableName: REVIEW
+            relativeToChangelogFile: true
+            file: data/filtered-review.csv
+            quotchar: '"'
+  

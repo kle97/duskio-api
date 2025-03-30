@@ -7,6 +7,10 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder(toBuilder = true)
 public class ReviewResponse extends BaseResponseWithID {
+    
+    private Long profileId;
+    
+    private Long editionId;
 
     private Integer score;
 

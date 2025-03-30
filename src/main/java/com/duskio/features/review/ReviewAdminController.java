@@ -39,7 +39,10 @@ public class ReviewAdminController {
     @Operation(summary = "Save new review")
     public ResponseEntity<ReviewResponse> save(@RequestBody @Validated ReviewRequest reviewRequest) {
         var response = reviewService.save(reviewRequest);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(response.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                                                  .path("/{id1}/{id2}")
+                                                  .buildAndExpand(response.getProfileId(), response.getEditionId())
+                                                  .toUri();
         return ResponseEntity.created(location).body(response);
     }
 

@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 public class ReviewEntityResponse extends ReviewResponse {
 
-    private ProfileResponse profileResponse;
+    private ProfileResponse profile;
 
     private EditionSimpleResponse edition;
 }

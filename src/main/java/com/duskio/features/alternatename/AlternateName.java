@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "ALTERNATE_NAME")
+@Table(name = "alternate_name")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter @ToString

@@ -1,3 +1,26 @@
+CREATE TABLE profile
+(
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
+    user_id            VARCHAR(255) NOT NULL,
+    username           VARCHAR(255) NOT NULL,
+    display_name       VARCHAR(255) NOT NULL,
+    biography          VARCHAR(4000),
+    location           VARCHAR(255),
+    date_of_birth      DATE,
+    website            VARCHAR(255),
+    profile_picture    VARCHAR(255),
+    background_picture VARCHAR(255),
+    created_by         VARCHAR(255) NOT NULL,
+    created_at         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by   VARCHAR(255) NOT NULL,
+    last_modified_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision           INT          NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE (user_id),
+    UNIQUE (username)
+);
+
+
 CREATE TABLE author
 (
     id               BIGINT       NOT NULL AUTO_INCREMENT,
@@ -106,23 +129,6 @@ CREATE TABLE work_subject
 );
 
 
-CREATE TABLE review
-(
-    profile_id       BIGINT       NOT NULL,
-    edition_id       BIGINT       NOT NULL,
-    score            INT          NOT NULL,
-    review           VARCHAR(4000),
-    created_by       VARCHAR(255) NOT NULL,
-    created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by VARCHAR(255) NOT NULL,
-    last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    revision         INT          NOT NULL DEFAULT 0,
-    PRIMARY KEY (profile_id, edition_id),
-    FOREIGN KEY (profile_id) REFERENCES profile (id) ON DELETE CASCADE,
-    FOREIGN KEY (edition_id) REFERENCES edition (id) ON DELETE CASCADE
-);
-
-
 CREATE TABLE publisher
 (
     id               BIGINT       NOT NULL AUTO_INCREMENT,
@@ -176,24 +182,19 @@ CREATE TABLE edition
 );
 
 
-CREATE TABLE profile
+CREATE TABLE review
 (
-    id                 BIGINT       NOT NULL AUTO_INCREMENT,
-    user_id            VARCHAR(255) NOT NULL,
-    username           VARCHAR(255) NOT NULL,
-    display_name       VARCHAR(255) NOT NULL,
-    biography          VARCHAR(4000),
-    location           VARCHAR(255),
-    date_of_birth      DATE,
-    website            VARCHAR(255),
-    profile_picture    VARCHAR(255),
-    background_picture VARCHAR(255),
-    created_by         VARCHAR(255) NOT NULL,
-    created_at         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   VARCHAR(255) NOT NULL,
-    last_modified_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    revision           INT          NOT NULL DEFAULT 0,
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
+    profile_id       BIGINT       NOT NULL,
+    edition_id       BIGINT       NOT NULL,
+    score            INT          NOT NULL,
+    review           VARCHAR(4000),
+    created_by       VARCHAR(255) NOT NULL,
+    created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by VARCHAR(255) NOT NULL,
+    last_modified_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revision         INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
-    UNIQUE (user_id),
-    UNIQUE (username)
+    FOREIGN KEY (profile_id) REFERENCES profile (id) ON DELETE CASCADE,
+    FOREIGN KEY (edition_id) REFERENCES edition (id) ON DELETE CASCADE
 );

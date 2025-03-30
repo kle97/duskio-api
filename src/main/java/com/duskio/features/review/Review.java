@@ -3,30 +3,32 @@ package com.duskio.features.review;
 import com.duskio.common.entity.AuditableWithID;
 import com.duskio.features.edition.Edition;
 import com.duskio.features.profile.Profile;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 @Entity
-@Indexed
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Review extends AuditableWithID {
+    
+    @Column(name = "profile_id", insertable = false, updatable = false)
+    private Long profileId;
 
-    @EmbeddedId
-    private ReviewId id;
+    @Column(name = "profile_id", insertable = false, updatable = false)
+    private Long editionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("profileId")
     @JoinColumn(name = "profile_id")
+    @JsonBackReference
     Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("editionId")
     @JoinColumn(name = "edition_id")
+    @JsonBackReference
     Edition edition;
     
     @GenericField(projectable = Projectable.YES)

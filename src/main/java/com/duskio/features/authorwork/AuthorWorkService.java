@@ -1,6 +1,8 @@
 package com.duskio.features.authorwork;
 
 import com.duskio.common.exception.ResourceNotFoundException;
+import com.duskio.features.author.Author;
+import com.duskio.features.work.Work;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,15 +19,15 @@ public class AuthorWorkService {
     private final AuthorWorkMapper authorWorkMapper;
 
     @Transactional(readOnly = true)
-    public AuthorWork findById(Long workId, Long authorId) {
+    public AuthorWork findById(Long authorId, Long workId) {
         return authorWorkRepository.findById(new AuthorWorkId(authorId, workId))
-                                   .orElseThrow(() -> new ResourceNotFoundException(AuthorWork.class, Long.class, workId, 
-                                                                                    Long.class, authorId));
+                                   .orElseThrow(() -> new ResourceNotFoundException(AuthorWork.class, Author.class, authorId, 
+                                                                                    Work.class, workId));
     }
 
     @Transactional(readOnly = true)
-    public AuthorWorkResponse findEntityById(Long workId, Long authorId) {
-        return authorWorkMapper.toWorkAuthorResponse(findById(workId, authorId));
+    public AuthorWorkResponse findEntityById(Long authorId, Long workId) {
+        return authorWorkMapper.toWorkAuthorResponse(findById(authorId, workId));
     }
 
     @Transactional(readOnly = true)
@@ -41,19 +43,19 @@ public class AuthorWorkService {
     }
 
     @Transactional
-    public AuthorWorkResponse update(Long workId, Long authorId, AuthorWorkRequest authorWorkRequest) {
-        AuthorWork authorWork = findById(workId, authorId);
+    public AuthorWorkResponse update(Long authorId, Long workId, AuthorWorkRequest authorWorkRequest) {
+        AuthorWork authorWork = findById(authorId, workId);
         authorWork.setId(new AuthorWorkId(authorId, workId));
         return authorWorkMapper.toWorkAuthorResponse(authorWorkMapper.toExistingWorkAuthor(authorWorkRequest, authorWork));
     }
 
     @Transactional
-    public void delete(Long workId, Long authorId) {
+    public void delete(Long authorId, Long workId) {
         AuthorWorkId workAuthorId = new AuthorWorkId(authorId, workId);
         if (authorWorkRepository.existsById(workAuthorId)) {
             authorWorkRepository.deleteById(workAuthorId);
         } else {
-            throw new ResourceNotFoundException(AuthorWork.class, Long.class, workId, Long.class, authorId);
+            throw new ResourceNotFoundException(AuthorWork.class, Author.class, authorId, Work.class, workId);
         }
     }
 }

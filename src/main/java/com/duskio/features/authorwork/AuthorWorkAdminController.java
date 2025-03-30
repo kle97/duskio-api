@@ -23,10 +23,10 @@ public class AuthorWorkAdminController {
     
     private final AuthorWorkService authorWorkService;
 
-    @GetMapping("/{workId}/{authorId}")
+    @GetMapping("/{authorId}/{workId}")
     @Operation(summary = "Find author-work by id")
-    public ResponseEntity<AuthorWorkResponse> findById(@PathVariable Long workId, @PathVariable Long authorId) {
-        return ResponseEntity.ok().body(authorWorkService.findEntityById(workId, authorId));
+    public ResponseEntity<AuthorWorkResponse> findById(@PathVariable Long authorId, @PathVariable Long workId) {
+        return ResponseEntity.ok().body(authorWorkService.findEntityById(authorId, workId));
     }
 
     @GetMapping("")
@@ -45,17 +45,17 @@ public class AuthorWorkAdminController {
         return ResponseEntity.created(location).body(response);
     }
 
-    @PutMapping("/{workId}/{authorId}")
+    @PutMapping("/{authorId}/{workId}")
     @Operation(summary = "Update author-work")
-    public ResponseEntity<AuthorWorkResponse> update(@PathVariable Long workId, @PathVariable Long authorId,
+    public ResponseEntity<AuthorWorkResponse> update(@PathVariable Long authorId, @PathVariable Long workId,
                                                      @RequestBody @Validated AuthorWorkRequest workAuthorRequest) {
-        return ResponseEntity.ok(authorWorkService.update(workId, authorId, workAuthorRequest));
+        return ResponseEntity.ok(authorWorkService.update(authorId, workId, workAuthorRequest));
     }
 
-    @DeleteMapping("/{workId}/{authorId}")
+    @DeleteMapping("/{authorId}/{workId}")
     @Operation(summary = "Delete author-work")
-    public ResponseEntity<Void> delete(@PathVariable Long workId, @PathVariable Long authorId) {
-        authorWorkService.delete(workId, authorId);
+    public ResponseEntity<Void> delete(@PathVariable Long authorId, @PathVariable Long workId) {
+        authorWorkService.delete(authorId, workId);
         return ResponseEntity.noContent().build();
     }
 }

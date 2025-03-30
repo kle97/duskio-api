@@ -1,5 +1,6 @@
 package com.duskio.common.exception;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
@@ -42,11 +43,13 @@ public class ResourceNotFoundException extends RuntimeException implements Error
         this.body = ProblemDetail.forStatusAndDetail(getStatusCode(), message);
     }
 
+    @Nonnull
     @Override
     public HttpStatusCode getStatusCode() {
         return HttpStatus.NOT_FOUND;
     }
 
+    @Nonnull
     @Override
     public ProblemDetail getBody() {
         return this.body;

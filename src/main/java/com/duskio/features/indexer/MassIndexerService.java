@@ -15,8 +15,6 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-
 @Service
 @RequiredArgsConstructor @Slf4j
 public class MassIndexerService {
@@ -25,7 +23,7 @@ public class MassIndexerService {
     private EntityManager entityManager;
 
     @Transactional
-    public void reinitializeIndexes() throws InterruptedException, IOException {
+    public void reinitializeIndexes() throws InterruptedException {
 //        deleteAllIndices();
         SearchSession searchSession = Search.session(entityManager);
         SearchSchemaManager schemaManager = searchSession.schemaManager();
@@ -33,12 +31,14 @@ public class MassIndexerService {
         searchSession.massIndexer().startAndWait();
     }
 
-    private void deleteAllIndices() throws IOException {
+    private void deleteAllIndices() {
         SearchMapping searchMapping = Search.mapping(entityManager.getEntityManagerFactory());
         Backend backend = searchMapping.backend();
         ElasticsearchBackend elasticsearchBackend = backend.unwrap(ElasticsearchBackend.class);
         try (RestClient restClient = elasticsearchBackend.client(RestClient.class)) {
-            restClient.performRequest(new Request("DELETE", "/_all"));
+            restClient.performRequest(new Request("DELETE", "/*,-.internal*"));
+        } catch (Exception e) {
+            log.error("Failed to delete all indices", e);
         }
     }
 }

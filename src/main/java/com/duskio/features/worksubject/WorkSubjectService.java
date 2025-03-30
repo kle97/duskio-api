@@ -1,6 +1,8 @@
 package com.duskio.features.worksubject;
 
 import com.duskio.common.exception.ResourceNotFoundException;
+import com.duskio.features.subject.Subject;
+import com.duskio.features.work.Work;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +21,8 @@ public class WorkSubjectService {
     @Transactional(readOnly = true)
     public WorkSubject findById(Long workId, Long subjectId) {
         return workSubjectRepository.findById(new WorkSubjectId(workId, subjectId))
-                                    .orElseThrow(() -> new ResourceNotFoundException(WorkSubject.class, Long.class, workId, Long.class, subjectId));
+                                    .orElseThrow(() -> new ResourceNotFoundException(WorkSubject.class, Work.class, workId,
+                                                                                     Subject.class, subjectId));
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +60,7 @@ public class WorkSubjectService {
         if (workSubjectRepository.existsById(workSubjectId)) {
             workSubjectRepository.deleteById(workSubjectId);
         } else {
-            throw new ResourceNotFoundException(WorkSubject.class, Long.class, workId, Long.class, subjectId);
+            throw new ResourceNotFoundException(WorkSubject.class, Work.class, workId, Subject.class, subjectId);
         }
     }
 }
