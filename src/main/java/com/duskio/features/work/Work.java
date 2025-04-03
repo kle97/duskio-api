@@ -6,8 +6,10 @@ import com.duskio.features.edition.Edition;
 import com.duskio.features.subject.Subject;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +37,7 @@ public class Work extends AuditableWithID {
                joinColumns = @JoinColumn(name = "work_id"),
                inverseJoinColumns = @JoinColumn(name = "subject_id"))
     @IndexedEmbedded(includeDepth = 1)
+    @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
     private Set<Subject> subjects = new HashSet<>();
 
     @ManyToMany
@@ -42,5 +45,6 @@ public class Work extends AuditableWithID {
                joinColumns = @JoinColumn(name = "work_id"),
                inverseJoinColumns = @JoinColumn(name = "author_id"))
     @IndexedEmbedded(includeDepth = 1)
+    @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
     private Set<Author> authors = new HashSet<>();
 }

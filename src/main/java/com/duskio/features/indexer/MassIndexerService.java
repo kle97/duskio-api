@@ -12,6 +12,7 @@ import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.mapping.SearchMapping;
 import org.hibernate.search.mapper.orm.schema.management.SearchSchemaManager;
 import org.hibernate.search.mapper.orm.session.SearchSession;
+import org.hibernate.search.mapper.pojo.work.IndexingPlanSynchronizationStrategy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,10 @@ public class MassIndexerService {
         SearchSession searchSession = Search.session(entityManager);
         SearchSchemaManager schemaManager = searchSession.schemaManager();
         schemaManager.dropAndCreate();
-        searchSession.massIndexer().startAndWait();
+        searchSession.indexingPlanSynchronizationStrategy(IndexingPlanSynchronizationStrategy.async());
+        searchSession.massIndexer()
+                     .idFetchSize(Integer.MIN_VALUE)
+                     .startAndWait();
     }
 
     private void deleteAllIndices() {

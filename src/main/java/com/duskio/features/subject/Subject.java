@@ -8,8 +8,8 @@ import jakarta.persistence.ManyToMany;
 import lombok.*;
 import org.hibernate.search.engine.backend.types.Aggregable;
 import org.hibernate.search.engine.backend.types.Projectable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Subject extends AuditableWithID {
 
-    @KeywordField(projectable = Projectable.YES, aggregable = Aggregable.YES)
+    @GenericField(projectable = Projectable.YES, aggregable = Aggregable.YES)
     @Column(nullable = false)
     @ToString.Include
     private String subjectName;

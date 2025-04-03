@@ -15,6 +15,8 @@ spring:
             protocol: http
             username: elastic
             password: 123456
+            analysis:
+              configurer: class:com.duskio.common.search.CustomElasticsearchAnalysisConfigurer
   datasource:
     url: jdbc:h2:file:./duskio;TRACE_LEVEL_FILE=0;MODE=MySQL;NON_KEYWORDS=VALUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;AUTO_SERVER=TRUE
     username: sa

@@ -1,6 +1,7 @@
 package com.duskio.features.edition;
 
 import com.duskio.common.entity.AuditableWithID;
+import com.duskio.common.search.CustomAnalyzer;
 import com.duskio.features.publisher.Publisher;
 import com.duskio.features.review.Review;
 import com.duskio.features.work.Work;
@@ -10,10 +11,8 @@ import lombok.*;
 import org.hibernate.search.engine.backend.types.Aggregable;
 import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.engine.backend.types.Sortable;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,12 +24,13 @@ import java.util.Set;
 @Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Edition extends AuditableWithID {
 
-    @FullTextField(projectable = Projectable.YES)
+    @FullTextField(name = "title_fulltext", analyzer = CustomAnalyzer.ENGLISH_ANALYZER)
+    @GenericField(projectable = Projectable.YES)
     @Column(nullable = false)
     @ToString.Include
     private String title;
 
-    @FullTextField(projectable = Projectable.YES)
+    @GenericField(projectable = Projectable.YES)
     private String subtitle;
 
     private String description;
@@ -82,9 +82,11 @@ public class Edition extends AuditableWithID {
     private Integer grade;
 
     @GenericField(projectable = Projectable.YES, sortable = Sortable.YES)
+    @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.NO)
     private Double averageRating;
 
     @GenericField(projectable = Projectable.YES, sortable = Sortable.YES)
+    @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.NO)
     private Integer ratingCount;
 
     @OneToMany(mappedBy = "edition", cascade = CascadeType.ALL, orphanRemoval = true)

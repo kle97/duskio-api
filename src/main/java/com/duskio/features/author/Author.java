@@ -1,6 +1,7 @@
 package com.duskio.features.author;
 
 import com.duskio.common.entity.AuditableWithID;
+import com.duskio.common.search.CustomAnalyzer;
 import com.duskio.features.alternatename.AlternateName;
 import com.duskio.features.authorlink.AuthorLink;
 import com.duskio.features.work.Work;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Getter @Setter @ToString(onlyExplicitlyIncluded = true)
 public class Author extends AuditableWithID {
 
-    @FullTextField(name = "_authorName")
+    @FullTextField(analyzer = CustomAnalyzer.ENGLISH_ANALYZER, name = "authorName_fulltext")
     @GenericField(projectable = Projectable.YES, aggregable = Aggregable.YES)
     @Column(nullable = false)
     @ToString.Include
